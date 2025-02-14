@@ -1,0 +1,33 @@
+* {
+    font-family: Helvetica, sans-serif;
+}
+
+th {
+    background-color: forestgreen;
+    width: 20%;
+}
+
+table {
+    width: 100%;
+    background-color: forestgreen;
+}
+
+div {
+    font-size: 50px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: forestgreen;
+}
+
+a {
+    color: white;
+}
+
+th {
+    color: white;
+}
+
+p {
+    color: black;
+}
