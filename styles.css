@@ -1,33 +1,57 @@
 * {
-    font-family: Helvetica, sans-serif;
+    font-family: /*Papyrus,*/'Delius Swash Caps', Arial, sans-serif;
+    background-color: rgb(255, 247, 231);
 }
 
+/* ok based on mimi's messages, we want
+    pink for title of page, in bold fun cursivy font
+    orange for the headers
+    cream for background
+    green for the line flower graphics
+    black for the middle text
+    
+find fonts
+spans to make green lines
+
+    optional for today:
+    animated intro thing
+    get a green thing other than a line
+    */
+
+
 th {
-    background-color: forestgreen;
+    background-color: rgb(255, 247, 231);
     width: 20%;
+    font-size: 30px;
 }
 
 table {
     width: 100%;
-    background-color: forestgreen;
+    background-color: rgb(255, 247, 231);
 }
 
 div {
-    font-size: 50px;
+    font-size: 80px;
     width: 100%;
     text-align: center;
-    color: white;
-    background-color: forestgreen;
+    color: rgb(231, 60, 148);
+    background-color: rgb(255, 247, 231);
+    padding-bottom: 50px;
+    font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
+    font: bold;
 }
 
 a {
-    color: white;
+    color: rgb(233, 123, 33);
 }
 
 th {
-    color: white;
+    color: rgb(233, 123, 33);
 }
 
 p {
+    padding: 0px;
+    margin: 0px;
     color: black;
+    text-align: center;
 }
