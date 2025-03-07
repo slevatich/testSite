@@ -3,6 +3,10 @@
     background-color: rgb(255, 247, 231);
 }
 
+body {
+    background-color: rgb(255, 247, 231);
+}
+
 /* ok based on mimi's messages, we want
     pink for title of page, in bold fun cursivy font
     orange for the headers
@@ -10,12 +14,12 @@
     green for the line flower graphics
     black for the middle text
     
-find fonts
 spans to make green lines
 
     optional for today:
     animated intro thing
     get a green thing other than a line
+    dynamically scale the title down to fit a certain size of the screen
     */
 
 
@@ -30,15 +34,53 @@ table {
     background-color: rgb(255, 247, 231);
 }
 
-div {
-    font-size: 80px;
-    width: 100%;
+.t {
+    font-size: 60px; /* pacifico seems to have 30px padding below and above for this font */
+    width: 20%;
     text-align: center;
+    /* margin: auto; */
     color: rgb(231, 60, 148);
     background-color: rgb(255, 247, 231);
-    padding-bottom: 50px;
+    float: left;
+    /* padding-bottom: 50px; */
     font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
     font: bold;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.v {
+    background-color: green;
+    margin-top: 51px; /* 105 - 3 == 102 / 2  */
+    /* margin-bottom: 300px; */
+    /* line-height: 400%; */
+    /* width: 30%; */
+    display: inline-block;
+    width: 40%;
+    font-size: 2px;
+    text-align: left;
+    float: left;
+    font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
+
+}
+
+.v2 {
+    background-color: green;
+    margin-top: 51px;
+    /* margin-bottom: 300px; */
+    /* line-height: 400%; */
+    /* width: 30%; */
+    display: inline-block;
+    width: 40%;
+    font-size: 2px; /* with pacifico 7px */
+    text-align: right;
+    float: right;
+    font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
+
+}
+
+div {
+    margin-top: 30px;
 }
 
 a {
