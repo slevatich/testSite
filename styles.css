@@ -7,20 +7,9 @@ body {
     background-color: rgb(255, 247, 231);
 }
 
-/* ok based on mimi's messages, we want
-    pink for title of page, in bold fun cursivy font
-    orange for the headers
-    cream for background
-    green for the line flower graphics
-    black for the middle text
-    
-spans to make green lines
-
-    optional for today:
-    animated intro thing
-    get a green thing other than a line
-    dynamically scale the title down to fit a certain size of the screen
-    */
+/* 
+    Font updates
+*/
 
 
 th {
