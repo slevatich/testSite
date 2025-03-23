@@ -89,14 +89,27 @@ p {
 
 /* password! */
 input {
-    margin: auto;
-    color: blue;
+    /* margin: auto; */
     display: inline-block;
-
+    width: 92px;
+    background-color: white;
 }
 
 button {
-    margin: auto;
+    /* margin: auto; */
     display: inline-block;
+    width: 96px;
+    background-color: white;
+}
 
+.passwordDiv {
+    display: block;
+    margin: auto;
+    width: 200px;
+}
+
+#passwordTitle {
+    display: block;
+    margin: auto;
+    text-align: center;
 }
