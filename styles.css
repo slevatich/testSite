@@ -1,6 +1,7 @@
 * {
     font-family: /*Papyrus,*/'Delius Swash Caps', Arial, sans-serif;
-    background-color: rgb(255, 247, 231);
+    /* background-color: rgb(255, 247, 231); */
+    /* TODO figure out how to make things on other pages get this inherited... */
 }
 
 body {
@@ -112,4 +113,30 @@ button {
     display: block;
     margin: auto;
     text-align: center;
+    color: white;
 }
+
+#leftCircle {
+    position: fixed;
+    left: -1300px;
+    background-color: rgb(231, 60, 148);
+    width: 2000px;
+    height: 300%;
+    top: 30px;
+    border-radius: 400px;
+    z-index: -10;
+}
+
+/* overlap, this one on top */
+#rightCircle {
+    position: fixed;
+    right: -1300px;
+    background-color: rgb(233, 123, 33);
+    width: 2000px;
+    height: 300%;
+    top: 60px;
+    border-radius: 400px;
+    z-index: -10;
+}
+
+/* todo fixed position name and date in corners */
