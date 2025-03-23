@@ -18,8 +18,15 @@ function checkpassword() {
     // too tired to be fancy, here's plaintext
     if (tf.value === "aguascalientes") {
         localStorage.setItem(localStorageKey, tf.value);
-        // TODO start the animation, load new page on completion
-        window.location.href = "index.html"
+        
+        var left = document.getElementById("leftCircle");
+        left.classList.add("leftAnimating");
+        var right = document.getElementById("rightCircle");
+        right.classList.add("rightAnimating");
+
+        setTimeout(() => {
+            window.location.href = "index.html"
+        }, 4000);
     }
     else 
     {

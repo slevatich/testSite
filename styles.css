@@ -116,6 +116,26 @@ button {
     color: white;
 }
 
+@keyframes slideToTheLeft {
+    from {left: -1300px;}
+    to {left: -2000px;}
+  }
+
+  @keyframes slideToTheRight {
+    from {right: -1300px;}
+    to {right: -2000px;}
+  }
+
+.leftAnimating {
+    animation-name: slideToTheLeft;
+    animation-duration: 4s;
+}
+
+.rightAnimating {
+    animation-name: slideToTheRight;
+    animation-duration: 4s;
+}
+
 #leftCircle {
     position: fixed;
     left: -1300px;
@@ -140,3 +160,4 @@ button {
 }
 
 /* todo fixed position name and date in corners */
+/* todo queue the animations slightly staggered */
