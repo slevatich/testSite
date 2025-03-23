@@ -86,3 +86,17 @@ p {
     color: black;
     text-align: center;
 }
+
+/* password! */
+input {
+    margin: auto;
+    color: blue;
+    display: inline-block;
+
+}
+
+button {
+    margin: auto;
+    display: inline-block;
+
+}
