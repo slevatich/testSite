@@ -14,6 +14,7 @@ body {
     /* Relative just moves out of the way. Absolute positions relative to parent */
     /* Yeah position relative needs to be expanded to a size by a child element that holds its position */
     /* Then you can do absolute top 50% and stuff */
+    margin: 0;
 }
 
 /* 
@@ -45,12 +46,12 @@ body {
     /* text-align: left; */
 }
 
-img {
+/* img { */
     /* width: 300px; */
     /* height: 400px; */
     /* margin: auto; */
     /* display: block; */
-}
+/* } */
 
 th {
     background-color: rgb(255, 247, 231);
@@ -74,7 +75,7 @@ table {
     /* padding-bottom: 50px; */
     font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
     font: bold;
-    display: inline-block;
+    /* display: inline-block; */
     margin-bottom: 30px;
 }
 
@@ -84,7 +85,7 @@ table {
     /* margin-bottom: 300px; */
     /* line-height: 400%; */
     /* width: 30%; */
-    display: inline-block;
+    /* display: inline-block; */
     width: 40%;
     font-size: 2px;
     text-align: left;
@@ -99,17 +100,13 @@ table {
     /* margin-bottom: 300px; */
     /* line-height: 400%; */
     /* width: 30%; */
-    display: inline-block;
+    /* display: inline-block; */
     width: 40%;
     font-size: 2px; /* with pacifico 7px */
     text-align: right;
     float: right;
     font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
 
-}
-
-div {
-    margin-top: 30px;
 }
 
 a {
@@ -143,6 +140,12 @@ button {
 }
 
 .passwordDiv {
+    display: block;
+    margin: auto;
+    width: 200px;
+}
+
+.emailSubmission {
     display: block;
     margin: auto;
     width: 200px;
@@ -203,7 +206,39 @@ button {
     bottom: 0;
     width: 100%;
     text-align: center;
+    margin-top: 50px;
+    background-image: url('imgs/WeddingWebsiteSamFlowers.png');
+    background-repeat: repeat-x;
+    background-position: 0cm;
+    background-size: 100px 100%;
+    padding-top: 55px;
+    padding-bottom: 25px;
+    position: relative;
+}
+
+.innerFooter {
+    text-align: center;
+    /* position: absolute; */
+    /* top: 40px; */
+    /* width: 100%; */
+    width: 360px;
+    margin: auto;
+    /* margin-left: 50%; */
+    /* margin-right: 50%; */
+    /* margin-left: 30%; */
+    /* margin-right: 30%; */
+    border-color: green;
+    border-width: 2px;
+    display: block;
+    border-radius: 3px;
+    border-style: dashed;
+    background-color: rgb(255, 247, 231);
 }
 
 /* todo fixed position name and date in corners */
 /* todo queue the animations slightly staggered */
+
+.bodyMargin {
+    margin-left: 50px;
+    margin-right: 50px;
+}
