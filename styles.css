@@ -2,16 +2,55 @@
     font-family: /*Papyrus,*/'Delius Swash Caps', Arial, sans-serif;
     /* background-color: rgb(255, 247, 231); */
     /* TODO figure out how to make things on other pages get this inherited... */
+    text-align: center;
 }
 
 body {
     background-color: rgb(255, 247, 231);
+    /* position: relative; */
+    /* min-height: 100%; */
+    /* Hmm how to get this to fill the whole height */
+    /* Vertical filling parent at minimum... */
+    /* Relative just moves out of the way. Absolute positions relative to parent */
+    /* Yeah position relative needs to be expanded to a size by a child element that holds its position */
+    /* Then you can do absolute top 50% and stuff */
 }
 
 /* 
     Font updates
 */
 
+.fakeImg {
+    /* margin: auto; */
+    /* display: block; */
+    position: absolute;
+    top: 50%;
+    /* height: 100%; */
+    width:100%;
+    /* left: 50%; */
+}
+
+.fakeImgCon {
+    margin: auto;
+    position: relative;
+    display: inline-block;
+}
+
+.textNearImage {
+    /* width: 50%; */
+    /* position: relative; */
+    /* display: inline; */
+    float: right;
+    width: 50%;
+    /* text-align: left; */
+}
+
+img {
+    /* width: 300px; */
+    /* height: 400px; */
+    /* margin: auto; */
+    /* display: block; */
+}
 
 th {
     background-color: rgb(255, 247, 231);
@@ -157,6 +196,13 @@ button {
     top: 60px;
     border-radius: 400px;
     z-index: -10;
+}
+
+.footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 
 /* todo fixed position name and date in corners */
