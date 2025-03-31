@@ -80,7 +80,7 @@ table {
 }
 
 .v {
-    background-color: green;
+    background-color: #004b13;
     margin-top: 51px; /* 105 - 3 == 102 / 2  */
     /* margin-bottom: 300px; */
     /* line-height: 400%; */
@@ -95,7 +95,7 @@ table {
 }
 
 .v2 {
-    background-color: green;
+    background-color: #004b13;
     margin-top: 51px;
     /* margin-bottom: 300px; */
     /* line-height: 400%; */
@@ -227,7 +227,7 @@ button {
     /* margin-right: 50%; */
     /* margin-left: 30%; */
     /* margin-right: 30%; */
-    border-color: green;
+    border-color: #004b13;
     border-width: 2px;
     display: block;
     border-radius: 3px;
