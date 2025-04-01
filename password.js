@@ -16,7 +16,8 @@ function checkpassword() {
     // TODO case insensitive
 
     // too tired to be fancy, here's plaintext
-    if (tf.value === "aguascalientes") {
+    // hi people who look at code site not ready enter at own RISK
+    if (tf.value === "aguascalientes2") {
         localStorage.setItem(localStorageKey, tf.value);
         
         var left = document.getElementById("leftCircle");

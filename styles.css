@@ -164,6 +164,14 @@ button {
     width: 200px;
 }
 
+#passwordTitle2 {
+    display: block;
+    margin: auto;
+    text-align: center;
+    color: white;
+    font-size: 10px;
+}
+
 .emailSubmission {
     display: block;
     margin: auto;
