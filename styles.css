@@ -46,6 +46,15 @@ body {
     /* text-align: left; */
 }
 
+.textNearImageL {
+    /* width: 50%; */
+    /* position: relative; */
+    /* display: inline; */
+    float: left;
+    width: 50%;
+    /* text-align: left; */
+}
+
 /* img { */
     /* width: 300px; */
     /* height: 400px; */
