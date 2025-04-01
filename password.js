@@ -13,28 +13,30 @@ const localStorageKey = "samimipw";
 function checkpassword() {
     var tf = document.getElementById("pw");
 
-    // TODO case insensitive
-
     // too tired to be fancy, here's plaintext
-    // hi people who look at code site not ready enter at own RISK
-    if (tf.value === "aguascalientes2") {
+    if (tf.value.toLowerCase() === "aguascalientes") {
         localStorage.setItem(localStorageKey, tf.value);
-        
+
+        // hmm not sure why this waits for animations to complete but oh well
+        setTimeout(() => {
+            window.location.href = "index.html"
+        }, 2500);
+
         var left = document.getElementById("leftCircle");
         left.classList.add("leftAnimating");
         var right = document.getElementById("rightCircle");
         right.classList.add("rightAnimating");
-        var left = document.getElementById("leftCircleText");
-        left.classList.add("leftAnimatingText");
-        var right = document.getElementById("rightCircleText");
-        right.classList.add("rightAnimatingText");
+        var left2 = document.getElementById("leftCircleText");
+        left2.classList.add("leftAnimatingText");
+        var right2 = document.getElementById("rightCircleText");
+        right2.classList.add("rightAnimatingText");
+        var right3 = document.getElementById("passwordTitle");
+        right3.classList.add("textAnimating");
 
-        setTimeout(() => {
-            window.location.href = "index.html"
-        }, 4000);
+        
     }
     else 
-    {
+    {        
         // TODO error shake (check save the date)
         tf.value = ""
     }

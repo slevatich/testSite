@@ -192,6 +192,22 @@ button {
     margin: auto;
     text-align: center;
     color: white;
+    font-size: 20px;
+}
+
+.textAnimating {
+    animation-name: textColor;
+    animation-duration: 3s;
+}
+
+.leftAnimating2 {
+    animation-name: slideToTheLeft;
+    animation-duration: 3s;
+}
+
+@keyframes textColor {
+    from {color: white}
+    to {color: black}
 }
 
 @keyframes slideToTheLeft {
