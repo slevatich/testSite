@@ -1,5 +1,5 @@
 * {
-    font-family: /*Papyrus,*/'Delius Swash Caps', Arial, sans-serif;
+    font-family: /*Papyrus,*/ 'Delius Swash Caps', Arial, sans-serif;
     /* background-color: rgb(255, 247, 231); */
     /* TODO figure out how to make things on other pages get this inherited... */
     text-align: center;
@@ -344,4 +344,17 @@ button {
 .bodyMargin {
     margin-left: 50px;
     margin-right: 50px;
+}
+
+h1 {
+    font-family: /*Papyrus,*/'Handlee', 'Delius Swash Caps', Arial, sans-serif;
+}
+h2 {
+    font-family: /*Papyrus,*/'Handlee', 'Delius Swash Caps', Arial, sans-serif;
+}
+h3 {
+    font-family: /*Papyrus,*/'Handlee', 'Delius Swash Caps', Arial, sans-serif;
+}
+h4 {
+    font-family: /*Papyrus,*/'Handlee', 'Delius Swash Caps', Arial, sans-serif;
 }
