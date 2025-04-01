@@ -204,14 +204,34 @@ button {
     to {right: -2000px;}
   }
 
+  @keyframes slideToTheLeftText {
+    from {left: 50px;}
+    to {left: -700px;}
+  }
+
+  @keyframes slideToTheRightText {
+    from {right: 50px;}
+    to {right: -700px;}
+  }
+
 .leftAnimating {
     animation-name: slideToTheLeft;
-    animation-duration: 4s;
+    animation-duration: 3s;
 }
 
 .rightAnimating {
     animation-name: slideToTheRight;
-    animation-duration: 4s;
+    animation-duration: 3s;
+}
+
+.leftAnimatingText {
+    animation-name: slideToTheLeftText;
+    animation-duration: 3s;
+}
+
+.rightAnimatingText {
+    animation-name: slideToTheRightText;
+    animation-duration: 3s;
 }
 
 #leftCircle {
@@ -235,6 +255,37 @@ button {
     top: 60px;
     border-radius: 400px;
     z-index: -10;
+}
+
+#leftCircleText {
+    position: fixed;
+    left: 50px;
+    /* background-color: rgb(231, 60, 148); */
+    width: 400px;
+    bottom: 50px;
+    /* height: 300%; */
+    /* top: 30px; */
+    /* border-radius: 400px; */
+    z-index: 5;
+    color: white;
+    font-size: 30px;
+    text-align: left;
+}
+
+#rightCircleText {
+    position: fixed;
+    right: 50px;
+    /* background-color: rgb(233, 123, 33); */
+    width: 400px;
+    /* height: 30px; */
+    top: 100px;
+    /* height: 300%; */
+    /* top: 60px; */
+    /* border-radius: 400px; */
+    z-index: 5;
+    color: white;
+    font-size: 30px;
+    text-align: right;
 }
 
 .footer {

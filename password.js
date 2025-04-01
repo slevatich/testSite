@@ -24,6 +24,10 @@ function checkpassword() {
         left.classList.add("leftAnimating");
         var right = document.getElementById("rightCircle");
         right.classList.add("rightAnimating");
+        var left = document.getElementById("leftCircleText");
+        left.classList.add("leftAnimatingText");
+        var right = document.getElementById("rightCircleText");
+        right.classList.add("rightAnimatingText");
 
         setTimeout(() => {
             window.location.href = "index.html"
