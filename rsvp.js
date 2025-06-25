@@ -59,9 +59,7 @@ function stageTwo(data, namekey)
 
     // submit button
 
-    // hide hint if alive
-    // show next bit
-    // change above text to be "rsvping for:" or like the field is auto filled in or something
+    // This submit button will send new data to update the server store for the sub people and the response will be the food prefs for the attendees
 }
 
 function serverCheck(key) {
@@ -70,3 +68,12 @@ function serverCheck(key) {
 }
 
 initialize();
+
+
+
+
+// high level todos
+// figure out server stuff (just need a DB on a server somewhere that people can't read)
+// client side need the multiple paths and stages (dropdown for food, checkboxes for who is coming)
+// client side need styling
+// also fix the footer nonsense
