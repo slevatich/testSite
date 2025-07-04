@@ -74,6 +74,7 @@ function foodOptionList()
 
 function buildInitialUI(elem, data)
 {
+    var selectionArr = []
     for (var item of data)
     {
         var tableRow = document.createElement('tr');
@@ -82,12 +83,20 @@ function buildInitialUI(elem, data)
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
         var selection = attendingOptionList();
+        selectionArr.push(selection);
         selection.selectedIndex = item.going === 1 ? 1 : item.going === 0 ? 2 : 0;
         tableHeader2.appendChild(selection);
         tableRow.appendChild(tableHeader2)
-        attendees.appendChild(tableRow)
-        
+        elem.appendChild(tableRow)
     }
+
+    // onsubmit, modify data, call stage2 with the modified data
+    var button = document.createElement('button')
+    button.onclick = () => {onSubmitInitialUI(data, selectionArr)};
+    button.textContent = "Submit"
+    elem.appendChild(button);
+    // TODO: button must be disabled until all are used
+    // TODO: button style needs to be outside this element
 
     // <tr>
     //         <th>Mimi Santos</th>
@@ -98,10 +107,30 @@ function buildInitialUI(elem, data)
     // use optimistic data from last time to load this without a fetch?
 }
 
+function selectionToRSVP(selection)
+{
+    if (selection.selectedIndex == 1) return 1
+    if (selection.selectedIndex == 2) return 0
+    
+    console.log("ERROR2")
+    return -1
+}
+
+function onSubmitInitialUI(originalData, selectionInfo)
+{
+    console.log(originalData)
+    console.log(selectionInfo)
+    for (var [idx, item] of originalData.entries())
+    {
+        item.going = selectionToRSVP(selectionInfo[idx]);
+    }
+    console.log("hi");
+    console.log(originalData)
+    stageTwo(originalData, null)
+}
+
 function buildFoodUI(elem, data)
 {
-    // show the menu?
-
     for (var item of data)
     {
         var tableRow = document.createElement('tr');
@@ -117,21 +146,26 @@ function buildFoodUI(elem, data)
         selection.selectedIndex = item.food;
         tableHeader2.appendChild(selection);
         tableRow.appendChild(tableHeader2)
-        attendees.appendChild(tableRow)
-        
+        elem.appendChild(tableRow)
     }
+
+    // additional dietary restrictions please reach out to sam and mimi
 
     // the submit mutation from this function is updating food choices for attending ppl
 }
 
 function buildRevisionsUI(elem, data)
 {
-
+    // TODO: do this
 }
 
+// TODO: also change the top level text here
 function stageTwo(data, namekey)
 {
-    localStorage.setItem(localStorageKey2, namekey);
+    if (namekey !== null)
+    {
+        localStorage.setItem(localStorageKey2, namekey);
+    }
     var hint = document.getElementById(hintID);
     hint.classList.add("hidden"); // TODO: add this
 
@@ -149,21 +183,24 @@ function stageTwo(data, namekey)
     // what state are we in. This is where we do data processing
     // if we ever see a null attending field, 
 
+    console.log("testin")
     for (var item of data)
     {
-        if (data.going != "1" || data.going != "0")
+        console.log(item.name + " " + item.going)
+        if (item.going !== 1 && item.going !== 0)
         {
             // this is the first time we are loading this data
-            buildFoodUI(attendees, data);
+            buildInitialUI(attendees, data);
             return;
         }
     }
 
     for (var item of data)
     {
-        if (data.going === "1" && (data.food === null || data.food === ""))
+        if (item.going === 1 && (item.food === null || item.food === ""))
         {
-            buildFoodUI(attendees, data.filter(attendee => attendee.going === "1"));
+            // second stage
+            buildFoodUI(attendees, data.filter(attendee => attendee.going === 1));
             return;
         }
     }
