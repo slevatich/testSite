@@ -45,21 +45,81 @@ async function initialize() {
     }
 }
 
+// use official unselected?
+function attendingOptionList()
+{
+    var select = document.createElement('select');
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    select.children[0].textContent = "--";
+    select.children[1].textContent = "Can Attend"
+    select.children[2].textContent = "Cannot Attend"
+    return select;
+}
+
+function foodOptionList()
+{
+    var select = document.createElement('select');
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    select.children[0].textContent = "--";
+    select.children[1].textContent = "Chicken"
+    select.children[2].textContent = "Salmon"
+    select.children[3].textContent = "Veggie"
+    return select;
+}
+
 function buildInitialUI(elem, data)
 {
     for (var item of data)
     {
-        var nameDiv = document.createElement('div');
-        nameDiv.textContent = item.name;
-        attendees.appendChild(nameDiv)
+        var tableRow = document.createElement('tr');
+        var tableHeader = document.createElement('th');
+        tableHeader.textContent = item.name;
+        tableRow.appendChild(tableHeader)
+        var tableHeader2 = document.createElement('th');
+        var selection = attendingOptionList();
+        selection.selectedIndex = item.going === 1 ? 1 : item.going === 0 ? 2 : 0;
+        tableHeader2.appendChild(selection);
+        tableRow.appendChild(tableHeader2)
+        attendees.appendChild(tableRow)
+        
     }
 
+    // <tr>
+    //         <th>Mimi Santos</th>
+    //         <th>Can Attend</th>
+    //         <th><select><option>--</option><option>Can Attend</option><option>Cannot Attend</option></select></th>
+
     // the submit mutation from this function is updating attendee variable for the given party
+    // use optimistic data from last time to load this without a fetch?
 }
 
 function buildFoodUI(elem, data)
 {
     // show the menu?
+
+    for (var item of data)
+    {
+        var tableRow = document.createElement('tr');
+        var tableHeader = document.createElement('th');
+        tableHeader.textContent = item.name;
+        tableRow.appendChild(tableHeader)
+        var tableHeaderFilled = document.createElement('th');
+        tableHeaderFilled.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
+        tableRow.appendChild(tableHeaderFilled);
+        // TODO: actually handle this error
+        var tableHeader2 = document.createElement('th');
+        var selection = foodOptionList();
+        selection.selectedIndex = item.food;
+        tableHeader2.appendChild(selection);
+        tableRow.appendChild(tableHeader2)
+        attendees.appendChild(tableRow)
+        
+    }
 
     // the submit mutation from this function is updating food choices for attending ppl
 }
@@ -94,7 +154,7 @@ function stageTwo(data, namekey)
         if (data.going != "1" || data.going != "0")
         {
             // this is the first time we are loading this data
-            buildInitialUI(attendees, data);
+            buildFoodUI(attendees, data);
             return;
         }
     }
