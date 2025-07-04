@@ -154,9 +154,34 @@ function buildFoodUI(elem, data)
     // the submit mutation from this function is updating food choices for attending ppl
 }
 
+// ok its worth thinking about flow here
+// do we show a text output of final selections here including the not attending people
+
 function buildRevisionsUI(elem, data)
 {
-    // TODO: do this
+    for (var item of data)
+    {
+        var tableRow = document.createElement('tr');
+        var tableHeader = document.createElement('th');
+        tableHeader.textContent = item.name;
+        tableRow.appendChild(tableHeader)
+        var tableHeaderFilled = document.createElement('th');
+        tableHeaderFilled.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
+        tableRow.appendChild(tableHeaderFilled);
+        // TODO: actually handle this error
+        if (item.going === 1) {
+            var tableHeader2 = document.createElement('th');
+            // var selection = foodOptionList();
+            // selection.selectedIndex = item.food;
+            // tableHeader2.appendChild(selection);
+
+
+            tableHeader2.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
+            tableRow.appendChild(tableHeader2)
+        }
+        
+        elem.appendChild(tableRow)
+    }
 }
 
 // TODO: also change the top level text here
