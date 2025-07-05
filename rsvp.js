@@ -129,8 +129,10 @@ function onSubmitInitialUI(originalData, selectionInfo)
     stageTwo(originalData, null)
 }
 
-function buildFoodUI(elem, data)
+function buildFoodUI(elem, fulldata, data)
 {
+    var selectionArr = []
+
     for (var item of data)
     {
         var tableRow = document.createElement('tr');
@@ -143,22 +145,53 @@ function buildFoodUI(elem, data)
         // TODO: actually handle this error
         var tableHeader2 = document.createElement('th');
         var selection = foodOptionList();
+        selectionArr.push(selection);
+
         selection.selectedIndex = item.food;
         tableHeader2.appendChild(selection);
         tableRow.appendChild(tableHeader2)
         elem.appendChild(tableRow)
     }
 
+    var button = document.createElement('button')
+    button.onclick = () => {onSubmitFoodUI(fulldata, selectionArr)};
+    button.textContent = "Submit"
+    elem.appendChild(button);
     // additional dietary restrictions please reach out to sam and mimi
 
+    // TODO: add a back button that will set the attending data but somehow not have it be submitted? hmm. maybe just call stage2 with another bool that forces us into edit mode if the other data isn't filled in yet. maybe the same bool
+
     // the submit mutation from this function is updating food choices for attending ppl
+}
+
+async function onSubmitFoodUI(optimisticData, foodInfo)
+{
+    console.log(optimisticData);
+    var count = 0;
+    for (var item of optimisticData)
+    {
+        if (item.going === 0)
+        {
+            await serverUpdate(item.name, 0)
+        } else
+        {
+            var food = foodInfo[count++].selectedIndex;
+            await serverUpdate(item.name, food)
+            item.food = food // optimistic update...
+        }
+    }
+
+    // if we get some successes go to the next page
+    // ideally this returns the data via a fetch but... this is fine
+    stageTwo(optimisticData, null)
 }
 
 // ok its worth thinking about flow here
 // do we show a text output of final selections here including the not attending people
 
-function buildRevisionsUI(elem, data)
+function buildRevisionsUI(elem, data, edit)
 {
+    // TODO: do the if edit
     for (var item of data)
     {
         var tableRow = document.createElement('tr');
@@ -182,10 +215,12 @@ function buildRevisionsUI(elem, data)
         
         elem.appendChild(tableRow)
     }
+
+    // TODO: edit and submit button
 }
 
 // TODO: also change the top level text here
-function stageTwo(data, namekey)
+function stageTwo(data, namekey, edit = false)
 {
     if (namekey !== null)
     {
@@ -225,12 +260,12 @@ function stageTwo(data, namekey)
         if (item.going === 1 && (item.food === null || item.food === ""))
         {
             // second stage
-            buildFoodUI(attendees, data.filter(attendee => attendee.going === 1));
+            buildFoodUI(attendees, data, data.filter(attendee => attendee.going === 1));
             return;
         }
     }
 
-    buildRevisionsUI(attendees, data);
+    buildRevisionsUI(attendees, data, edit);
     
 
 
@@ -249,7 +284,6 @@ function stageTwo(data, namekey)
 
 async function serverCheck(key) {
 
-    var url = 'https://script.google.com/macros/s/AKfycby_lgXWcSDUPHzBWWKjwQvkNs2jy8QShYPu8TTOJrMQiTvSEAiGboK0bb08IkNb2pNy/exec'
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key);
     console.log(urlWithName);
 
@@ -263,6 +297,26 @@ async function serverCheck(key) {
         .then(data => {
             console.log('Data received:', data);
             return data.data;
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+
+}
+
+const url = 'https://script.google.com/macros/s/AKfycbxQwQPjnE-DiEV2bW3UukU-721263tlN1vYsYVRKlkaOTm--nF4-Od3ciHXoCoQtx9C/exec';
+
+async function serverUpdate(name, food) {
+
+    var urlWithName = url + '?path=Sheet1&action=rsvp&Name=' + encodeURIComponent(name) + '&Food=' + encodeURIComponent(food);
+    console.log(urlWithName);
+
+    return fetch(urlWithName)
+        .then(response => {
+            if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text(); // or .text(), .blob(), etc., depending on expected response
         })
         .catch(error => {
             console.error('Fetch error:', error);
