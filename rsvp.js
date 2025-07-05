@@ -21,28 +21,32 @@ async function checkrsvp() {
     else if (!attempted) {
         attempted = true;
         // show hint
+        // if pulled from local storage maybe we clear that?
     }
 }
 
-async function initialize() {
+function initialize() {
     var key = localStorage.getItem(localStorageKey2);
     console.log(key + " " + localStorageKey2)
     if (key !== null && key != "")
     {
-        // TODO: loading spinner
-        var check = await serverCheck(key);
-        console.log(check);
-        if (check !== null)
-        {
-            console.log("sdhjsk");
-            stageTwo(check, key);
-        }
-        else 
-        {
-            // OPTIONAL clear local storage if this doesn't work
-            // OPTIONAL display the message
-        }
+        var tf = document.getElementById(inputID);
+        tf.value = key;
     }
+        // TODO: loading spinner
+        // var check = await serverCheck(key);
+        // console.log(check);
+        // if (check !== null)
+        // {
+        //     console.log("sdhjsk");
+        //     stageTwo(check, key);
+        // }
+        // else 
+        // {
+        //     // OPTIONAL clear local storage if this doesn't work
+        //     // OPTIONAL display the message
+        // }
+    
 }
 
 // use official unselected?
@@ -379,7 +383,8 @@ async function serverUpdate(name, food) {
 
 }
 
-initialize();
+document.addEventListener('DOMContentLoaded', initialize)
+
 
 
 
