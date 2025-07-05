@@ -79,7 +79,7 @@ function foodOptionList()
     return select;
 }
 
-function buildInitialUI(elem, data)
+function buildInitialUI(elem, data, edit)
 {
     var selectionArr = []
     for (var item of data)
@@ -89,9 +89,9 @@ function buildInitialUI(elem, data)
         tableHeader.textContent = item.name;
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
-        var selection = attendingOptionList();
+        var selection = attendingOptionList(!edit);
         selectionArr.push(selection);
-        selection.selectedIndex = item.going === 1 ? 1 : item.going === 0 ? 2 : 0;
+        selection.selectedIndex = dataToSelectedIndex(!edit);
         tableHeader2.appendChild(selection);
         tableRow.appendChild(tableHeader2)
         elem.appendChild(tableRow)
@@ -126,6 +126,12 @@ function selectionToRSVP(selection, includeDashes = true)
     
     console.log("ERROR2")
     return -1
+}
+
+function dataToSelectedIndex(item, includeDashes = true)
+{
+    if (!includeDashes) return item.going === 1 ? 0 : 1
+    return item.going === 1 ? 1 : item.going === 0 ? 2 : 0;
 }
 
 function onSubmitInitialUI(originalData, selectionInfo)
@@ -279,7 +285,7 @@ async function onSubmitEdits(originalData, attendanceInfo, foodInfo)
 }
 
 // TODO: also change the top level text here
-function stageTwo(data, namekey, edit = false)
+function stageTwo(data, namekey, edit = false, back = false)
 {
     if (namekey !== null)
     {
@@ -306,10 +312,10 @@ function stageTwo(data, namekey, edit = false)
     for (var item of data)
     {
         console.log(item.name + " " + item.going)
-        if (item.going !== 1 && item.going !== 0)
+        if (back || (item.going !== 1 && item.going !== 0))
         {
-            // this is the first time we are loading this data
-            buildInitialUI(attendees, data);
+            // this is the first time we are loading this data (unless back is true)
+            buildInitialUI(attendees, data, back);
             return;
         }
     }
@@ -325,33 +331,22 @@ function stageTwo(data, namekey, edit = false)
     }
 
     buildRevisionsUI(attendees, data, edit);
-    
-
-
-
-
-    
-
-
-    // ok create the ppl checkboxes dynamically? add these things as children of a div
-    // checkbox shows the dietary restrictions
-
-    // submit button
-
-    // This submit button will send new data to update the server store for the sub people and the response will be the food prefs for the attendees
 }
 
-async function serverCheck(key) {
 
+
+const url = 'https://script.google.com/macros/s/AKfycbxQwQPjnE-DiEV2bW3UukU-721263tlN1vYsYVRKlkaOTm--nF4-Od3ciHXoCoQtx9C/exec';
+
+async function serverCheck(key) {
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key);
     console.log(urlWithName);
 
     return fetch(urlWithName)
         .then(response => {
             if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json(); // or .text(), .blob(), etc., depending on expected response
+            return response.json(); // response mime type
         })
         .then(data => {
             console.log('Data received:', data);
@@ -363,22 +358,19 @@ async function serverCheck(key) {
 
 }
 
-const url = 'https://script.google.com/macros/s/AKfycbxQwQPjnE-DiEV2bW3UukU-721263tlN1vYsYVRKlkaOTm--nF4-Od3ciHXoCoQtx9C/exec';
-
 async function serverUpdate(name, food) {
-
     var urlWithName = url + '?path=Sheet1&action=rsvp&Name=' + encodeURIComponent(name) + '&Food=' + encodeURIComponent(food);
     console.log(urlWithName);
 
     return fetch(urlWithName)
         .then(response => {
             if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.text(); // or .text(), .blob(), etc., depending on expected response
+            return response.text();
         })
         .catch(error => {
-            console.error('Fetch error:', error);
+            console.error('Update error:', error);
         });
 
 }
@@ -387,10 +379,9 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
+// TODO list
+// loading spinners on async calls
+// client styling
 
-
-// high level todos
-// figure out server stuff (just need a DB on a server somewhere that people can't read)
-// client side need the multiple paths and stages (dropdown for food, checkboxes for who is coming)
-// client side need styling
-// also fix the footer nonsense
+// Future TODO
+// footer fixing
