@@ -46,15 +46,18 @@ async function initialize() {
 }
 
 // use official unselected?
-function attendingOptionList()
+function attendingOptionList(includeDashes = true)
 {
+    var count = 0;
     var select = document.createElement('select');
     select.appendChild(document.createElement('option'));
     select.appendChild(document.createElement('option'));
-    select.appendChild(document.createElement('option'));
-    select.children[0].textContent = "--";
-    select.children[1].textContent = "Can Attend"
-    select.children[2].textContent = "Cannot Attend"
+    if (includeDashes) {
+        select.appendChild(document.createElement('option'));
+        select.children[count++].textContent = "--";
+    }
+    select.children[count++].textContent = "Can Attend"
+    select.children[count++].textContent = "Cannot Attend"
     return select;
 }
 
@@ -107,8 +110,13 @@ function buildInitialUI(elem, data)
     // use optimistic data from last time to load this without a fetch?
 }
 
-function selectionToRSVP(selection)
+function selectionToRSVP(selection, includeDashes = true)
 {
+    if (!includeDashes)
+    {
+        if (selection.selectedIndex == 1) return 0
+        else return 1
+    }
     if (selection.selectedIndex == 1) return 1
     if (selection.selectedIndex == 2) return 0
     
@@ -191,32 +199,79 @@ async function onSubmitFoodUI(optimisticData, foodInfo)
 
 function buildRevisionsUI(elem, data, edit)
 {
-    // TODO: do the if edit
+    var selectionArr = []
+    var foodSelectionArr = []
+
     for (var item of data)
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
         tableHeader.textContent = item.name;
         tableRow.appendChild(tableHeader)
-        var tableHeaderFilled = document.createElement('th');
-        tableHeaderFilled.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
-        tableRow.appendChild(tableHeaderFilled);
+        var tableHeader2 = document.createElement('th');
+        if (!edit)
+        {
+            tableHeader2.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
+        }
+        else
+        {
+            var selection = attendingOptionList(false);
+            selectionArr.push(selection);
+            selection.selectedIndex = item.going === 1 ? 0 : 1//item.going === 0 ? 2 : 0;
+            tableHeader2.appendChild(selection);
+        }
+        tableRow.appendChild(tableHeader2);
         // TODO: actually handle this error
-        if (item.going === 1) {
-            var tableHeader2 = document.createElement('th');
+        if (item.going === 1 || edit) {
+            var tableHeader3 = document.createElement('th');
             // var selection = foodOptionList();
             // selection.selectedIndex = item.food;
             // tableHeader2.appendChild(selection);
 
+            if (!edit)
+            {
+                tableHeader3.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
+            }
+            else
+            {
+                var selection = foodOptionList();
+                foodSelectionArr.push(selection);
 
-            tableHeader2.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
-            tableRow.appendChild(tableHeader2)
+                selection.selectedIndex = item.food;
+                tableHeader3.appendChild(selection);
+            }
+            tableRow.appendChild(tableHeader3)
         }
         
         elem.appendChild(tableRow)
     }
 
-    // TODO: edit and submit button
+    if (!edit)
+    {
+        var button = document.createElement('button')
+        button.onclick = () => {stageTwo(data, null, true)};
+        button.textContent = "Edit"
+        elem.appendChild(button);
+    }
+    else
+    {
+        var button = document.createElement('button')
+        button.onclick = () => {onSubmitEdits(data, selectionArr, foodSelectionArr)};
+        button.textContent = "Submit Edits"
+        elem.appendChild(button);
+    }
+}
+
+async function onSubmitEdits(originalData, attendanceInfo, foodInfo)
+{
+    for (var [idx, item] of originalData.entries())
+    {
+        item.going = selectionToRSVP(attendanceInfo[idx], false);
+        item.food = item.going === 1 ? foodInfo[idx].selectedIndex : 0;
+        await serverUpdate(item.name, item.food)
+    }
+
+    stageTwo(originalData, null);
 }
 
 // TODO: also change the top level text here
