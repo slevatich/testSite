@@ -4,7 +4,7 @@ var hintID = "hint"
 var inputID = "rsvp"
 var formID = "form"
 var attendeesID = "attendees"
-
+var attendeesHeaderID = "attendeesHeader"
 
 
 
@@ -33,20 +33,6 @@ function initialize() {
         var tf = document.getElementById(inputID);
         tf.value = key;
     }
-        // TODO: loading spinner
-        // var check = await serverCheck(key);
-        // console.log(check);
-        // if (check !== null)
-        // {
-        //     console.log("sdhjsk");
-        //     stageTwo(check, key);
-        // }
-        // else 
-        // {
-        //     // OPTIONAL clear local storage if this doesn't work
-        //     // OPTIONAL display the message
-        // }
-    
 }
 
 // use official unselected?
@@ -79,8 +65,9 @@ function foodOptionList()
     return select;
 }
 
-function buildInitialUI(elem, data, edit)
+function buildInitialUI(elem, elemHeader, data, edit)
 {
+    elemHeader.textContent = "Hello! We have your party down for these attendees. To start, mark each person's attendance"
     var selectionArr = []
     for (var item of data)
     {
@@ -89,9 +76,9 @@ function buildInitialUI(elem, data, edit)
         tableHeader.textContent = item.name;
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
-        var selection = attendingOptionList(!edit);
+        var selection = attendingOptionList(); // !edit to do the revised flow but submission is more complex
         selectionArr.push(selection);
-        selection.selectedIndex = dataToSelectedIndex(!edit);
+        selection.selectedIndex = dataToSelectedIndex(item);
         tableHeader2.appendChild(selection);
         tableRow.appendChild(tableHeader2)
         elem.appendChild(tableRow)
@@ -100,7 +87,7 @@ function buildInitialUI(elem, data, edit)
     // onsubmit, modify data, call stage2 with the modified data
     var button = document.createElement('button')
     button.onclick = () => {onSubmitInitialUI(data, selectionArr)};
-    button.textContent = "Submit"
+    button.textContent = "Next"
     elem.appendChild(button);
     // TODO: button must be disabled until all are used
     // TODO: button style needs to be outside this element
@@ -142,13 +129,21 @@ function onSubmitInitialUI(originalData, selectionInfo)
     {
         item.going = selectionToRSVP(selectionInfo[idx]);
     }
+
+    // TODO:
+    // if everyone is a no, we early submit
+    // this case also needs to route to the edit screen in stageTwo
+
     console.log("hi");
     console.log(originalData)
     stageTwo(originalData, null)
 }
 
-function buildFoodUI(elem, fulldata, data)
+function buildFoodUI(elem, elemHeader, fulldata, data)
 {
+    elemHeader.textContent = "Wonderful! We've selected some very tasty food options for dinner: for those attending, please mark what food option they'd prefer. Please let sam or mimi know via text if your party has additional dietary restrictions we should be aware of."
+    // TODO: add shuttle text here too / styling wise we should have a lower pt font for addt info like the dietary ask
+
     var selectionArr = []
 
     for (var item of data)
@@ -171,10 +166,19 @@ function buildFoodUI(elem, fulldata, data)
         elem.appendChild(tableRow)
     }
 
+    var buttonRow = document.createElement('tr');
+
+    var ebutton = document.createElement('button')
+    ebutton.onclick = () => {stageTwo(fulldata, null, false, true)};
+    ebutton.textContent = "Back"
+    buttonRow.appendChild(ebutton);
+
     var button = document.createElement('button')
     button.onclick = () => {onSubmitFoodUI(fulldata, selectionArr)};
     button.textContent = "Submit"
-    elem.appendChild(button);
+    buttonRow.appendChild(button);
+
+    elem.appendChild(buttonRow);
     // additional dietary restrictions please reach out to sam and mimi
 
     // TODO: add a back button that will set the attending data but somehow not have it be submitted? hmm. maybe just call stage2 with another bool that forces us into edit mode if the other data isn't filled in yet. maybe the same bool
@@ -207,10 +211,15 @@ async function onSubmitFoodUI(optimisticData, foodInfo)
 // ok its worth thinking about flow here
 // do we show a text output of final selections here including the not attending people
 
-function buildRevisionsUI(elem, data, edit)
+function buildRevisionsUI(elem, elemHeader, data, edit)
 {
     var selectionArr = []
     var foodSelectionArr = []
+
+    var noAttendees = false;
+    elemHeader.textContent = !noAttendees ? 
+    "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
+    "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. That said, if any part of your inability to attend is financial Sam and Mimi would love to chat about if some support could make attending possible :)"
 
     for (var item of data)
     {
@@ -289,7 +298,11 @@ function stageTwo(data, namekey, edit = false, back = false)
 {
     if (namekey !== null)
     {
+        // test
+        console.log("dhi" + namekey);
+        if (localStorage.getItem(localStorageKey2) !== null) localStorage.removeItem(localStorageKey2)
         localStorage.setItem(localStorageKey2, namekey);
+        console.log(localStorage.getItem(localStorageKey2));
     }
     var hint = document.getElementById(hintID);
     hint.classList.add("hidden"); // TODO: add this
@@ -297,6 +310,7 @@ function stageTwo(data, namekey, edit = false, back = false)
     var form = document.getElementById(formID);
     form.classList.remove("hidden");
 
+    var attendeesHeader = document.getElementById(attendeesHeaderID);
     var attendees = document.getElementById(attendeesID);
     console.log("child count" + attendees.children.length)
     const attendeePrevCount = attendees.children.length;
@@ -315,7 +329,7 @@ function stageTwo(data, namekey, edit = false, back = false)
         if (back || (item.going !== 1 && item.going !== 0))
         {
             // this is the first time we are loading this data (unless back is true)
-            buildInitialUI(attendees, data, back);
+            buildInitialUI(attendees, attendeesHeader, data, back);
             return;
         }
     }
@@ -325,12 +339,12 @@ function stageTwo(data, namekey, edit = false, back = false)
         if (item.going === 1 && (item.food === null || item.food === ""))
         {
             // second stage
-            buildFoodUI(attendees, data, data.filter(attendee => attendee.going === 1));
+            buildFoodUI(attendees, attendeesHeader, data, data.filter(attendee => attendee.going === 1));
             return;
         }
     }
 
-    buildRevisionsUI(attendees, data, edit);
+    buildRevisionsUI(attendees, attendeesHeader, data, edit);
 }
 
 
@@ -380,8 +394,24 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // TODO list
-// loading spinners on async calls
-// client styling
+// ** CLIENT DYNAMIC BUTTON DISABLING can we do this without re-rendering?
+// ** loading spinners on async calls
+// ** client styling
+// Smaller content things
+    // move this to the main RSVP page
+    // Needs shuttle checkbox (on food page and edit page)
+    // early submit if everyone is a no + different text
+    // hide the top section after you hit the button. refresh takes you back there (add a re-enter name button? back?)
+
+// put the names in the sheet and format properly
+// data sanitizing / lowercase stuff
+// mobile testing
+
+// Needed but could demo to mimi before / mostly logical
+// fix whatever is happening with local variable storage in safari
+// hinting logic for initial checks
+// server side reject food input outside of 0-4 or whatever
+// email form for additional updates on the submit page?
 
 // Future TODO
 // footer fixing
