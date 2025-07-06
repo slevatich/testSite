@@ -596,6 +596,8 @@ document.addEventListener('DOMContentLoaded', initialize)
 // dynamic disabling for the edit view
 
 
+
+
 // put the names in the sheet and format properly
 
 // THIS IS THE POINT I CAN UPDATE
