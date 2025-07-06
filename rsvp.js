@@ -4,23 +4,49 @@ var hintID = "hint"
 var inputID = "rsvp"
 var formID = "form"
 var attendeesID = "attendees"
+var loadingID = "loading"
 var attendeesHeaderID = "attendeesHeader"
 
+var timerID = 0;
+var timerFrame = 0;
+function showLoading()
+{
+    // show
+    var loading = document.getElementById(loadingID);
+    loading.classList.remove("hidden"); // TODO: add this
 
+    timerID = setInterval(() => {
+        if (timerFrame % 3 == 0) loading.textContent = "Loading."
+        if (timerFrame % 3 == 1) loading.textContent = "Loading.."
+        if (timerFrame % 3 == 2) loading.textContent = "Loading..."
+        timerFrame++;
+    }, 500)
+}
+
+function hideLoading()
+{
+    clearInterval(timerID)
+    // hide
+    var loading = document.getElementById(loadingID);
+    loading.classList.add("hidden");
+}
 
 
 async function checkrsvp() {
     var tf = document.getElementById(inputID);
     var savedNameKey = tf.value//.toLowerCase();
     // TODO: fix lowercase data sanitization server side
+    showLoading()
     var check = await serverCheck(savedNameKey); // this will have a data model
+    hideLoading()
     if (check !== null)
     {
        stageTwo(check, savedNameKey);
     }
     else if (!attempted) {
         attempted = true;
-        // show hint
+        var hint = document.getElementById(hintID)
+        hint.classList.remove("hidden")
         // if pulled from local storage maybe we clear that?
     }
 }
@@ -238,11 +264,15 @@ async function onSubmitFoodUI(optimisticData, foodInfo)
     {
         if (item.going === 0)
         {
+            showLoading()
             await serverUpdate(item.name, 0)
+            hideLoading()
         } else
         {
             var food = foodInfo[count++].selectedIndex;
+            showLoading()
             await serverUpdate(item.name, food)
+            hideLoading()
             item.food = food // optimistic update...
         }
     }
@@ -331,7 +361,9 @@ async function onSubmitEdits(originalData, attendanceInfo, foodInfo)
     {
         item.going = selectionToRSVP(attendanceInfo[idx], false);
         item.food = item.going === 1 ? foodInfo[idx].selectedIndex : 0;
+        showLoading()
         await serverUpdate(item.name, item.food)
+        hideLoading()
     }
 
     stageTwo(originalData, null);
@@ -438,7 +470,6 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // TODO list
-// ** CLIENT DYNAMIC BUTTON DISABLING can we do this without re-rendering?
 // ** loading spinners on async calls
 // ** client styling
 // Smaller content things
@@ -446,12 +477,14 @@ document.addEventListener('DOMContentLoaded', initialize)
     // Needs shuttle checkbox (on food page and edit page)
     // early submit if everyone is a no + different text
     // hide the top section after you hit the button. refresh takes you back there (add a re-enter name button? back?)
+    // how do we handle babies?
 
 // put the names in the sheet and format properly
 // data sanitizing / lowercase stuff
 // mobile testing
 
 // Needed but could demo to mimi before / mostly logical
+// dynamic disabling for the edit view
 // fix whatever is happening with local variable storage in safari
 // hinting logic for initial checks
 // server side reject food input outside of 0-4 or whatever
