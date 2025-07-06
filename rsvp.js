@@ -212,7 +212,7 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     var selectionArr = []
 
     var button = document.createElement('button')
-    initializeButtonTracker(data.length)
+    initializeButtonTracker(data.filter(attendee => attendee.baby === 0).length)
 
 
     for (let [idx, item] of data.entries())
@@ -224,18 +224,29 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
         var tableHeaderFilled = document.createElement('th');
         tableHeaderFilled.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
         tableRow.appendChild(tableHeaderFilled);
-        // TODO: actually handle this error
-        var tableHeader2 = document.createElement('th');
-        var selection = foodOptionList();
-        selection.addEventListener('change', (e) => {
-            updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
-        })
-        console.log(item.food)
-        updateButtonTracker(idx, item.food !== 0 && item.food !== "", button);
-        selectionArr.push(selection);
+        // TODO: actually handle this error?
 
-        selection.selectedIndex = item.food;
-        tableHeader2.appendChild(selection);
+
+        var tableHeader2 = document.createElement('th');
+        if (item.baby === 0)
+        {
+            var selection = foodOptionList();
+            selection.addEventListener('change', (e) => {
+                updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
+            })
+            console.log(item.food)
+            updateButtonTracker(idx, item.food !== 0 && item.food !== "", button);
+            selectionArr.push(selection);
+            selection.selectedIndex = item.food;
+            tableHeader2.appendChild(selection);
+        }
+        else
+        {
+            var babyText = document.createElement('th')
+            babyText.innerText = item.baby === 1 ? "Kid's Meal" : "Bites of your food / baby food as appropriate"
+            tableHeader2.appendChild(babyText);
+        }
+
         tableRow.appendChild(tableHeader2)
         elem.appendChild(tableRow)
     }
@@ -307,14 +318,13 @@ async function onSubmitFoodUI(optimisticData, foodInfo, shuttleInfo)
     var count = 0;
     for (var item of optimisticData)
     {
-        if (item.going === 0)
+        if (item.going === 0 || item.baby !== 0)
         {
             showLoading()
-            await serverUpdate(item.name, 0)
+            await serverUpdate(item.name, item.going)
             hideLoading()
         } else
         {
-            console.log(shuttleInfo + " " + shuttleInfo[0].checked)
             var serverDataForShuttle = serverDataFromShuttleInfo(shuttleInfo, item.baby)
             var food = foodInfo[count++].selectedIndex + serverDataForShuttle;
             showLoading()
@@ -370,9 +380,9 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             // selection.selectedIndex = item.food;
             // tableHeader2.appendChild(selection);
 
-            if (!edit)
+            if (item.baby !== 0 || !edit)
             {
-                tableHeader3.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
+                tableHeader3.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : item.baby === 1 ? "Kid's Meal" : item.baby === 2 ? "Whatever the baby eats" : "Error"
             }
             else
             {
@@ -462,7 +472,7 @@ async function onSubmitEdits(originalData, attendanceInfo, foodInfo, shuttleChec
     for (var [idx, item] of originalData.entries())
     {
         item.going = selectionToRSVP(attendanceInfo[idx], false);
-        item.food = item.going === 1 ? foodInfo[idx].selectedIndex : 0;
+        item.food = item.baby !== 0 ? 0 : item.going === 1 ? foodInfo[idx].selectedIndex : 0;
         item.shuttle = serverDataFromShuttleInfo(shuttleCheckboxes, item.baby) / 10
         showLoading()
         await serverUpdate(item.name, item.food + serverDataFromShuttleInfo(shuttleCheckboxes, item.baby))
@@ -519,7 +529,7 @@ function stageTwo(data, namekey, edit = false, back = false)
 
     for (var item of data)
     {
-        if (item.going === 1 && (item.food === null || item.food === ""))
+        if (item.going === 1 && item.baby === 0 && (item.food === null || item.food === ""))
         {
             // second stage
             buildFoodUI(attendees, attendeesHeader, data, data.filter(attendee => attendee.going === 1));
@@ -578,13 +588,12 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // TODO list
-// ** client styling 
+// ** client styling (seperate segments)
 
 // how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food). babies don't need extra shuttle space
 
 // fix the shuttles
 
-// wedding (reception, tornaboda)
 // different text for if everyone in party says no
 // dynamic disabling for the edit view
 
