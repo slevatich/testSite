@@ -382,7 +382,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
             if (item.baby !== 0 || !edit)
             {
-                tableHeader3.textContent = item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : item.baby === 1 ? "Kid's Meal" : item.baby === 2 ? "Whatever the baby eats" : "Error"
+                tableHeader3.textContent = item.baby === 1 ? "Kid's Meal" : item.baby === 2 ? "Whatever the baby eats" : item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
             }
             else
             {
@@ -402,8 +402,8 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
     // TODO: change these to yesses if we aren't in edit mode
     // TODO: use item values
-    console.log(data[0].shuttle + "SHUTTLE")
-
+    // console.log(data[0].shuttle + "SHUTTLE")
+    console.log(data)
     var shuttleCheckboxes = []
 
 
@@ -472,7 +472,7 @@ async function onSubmitEdits(originalData, attendanceInfo, foodInfo, shuttleChec
     for (var [idx, item] of originalData.entries())
     {
         item.going = selectionToRSVP(attendanceInfo[idx], false);
-        item.food = item.baby !== 0 ? 0 : item.going === 1 ? foodInfo[idx].selectedIndex : 0;
+        item.food = item.baby !== 0 ? item.going : item.going === 1 ? foodInfo[idx].selectedIndex : 0;
         item.shuttle = serverDataFromShuttleInfo(shuttleCheckboxes, item.baby) / 10
         showLoading()
         await serverUpdate(item.name, item.food + serverDataFromShuttleInfo(shuttleCheckboxes, item.baby))
@@ -542,10 +542,10 @@ function stageTwo(data, namekey, edit = false, back = false)
 
 
 
-const url = 'https://script.google.com/macros/s/AKfycbwhZciFVzkN0wqFPGe9j1x7qroXrGF1hsiW5W_QyZ6mTISq6qB4ocyLjrrKg_fNkUs/exec';
+const url = 'https://script.google.com/macros/s/AKfycbyCQn2PbMB2xf0iEWYt84ETsEBvhw7gXpLmumZ7WLI-ssswY9S6ZK3b-eBOjY7AIzbm/exec';
 
 async function serverCheck(key) {
-    var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key);
+    var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key.toLowerCase());
     console.log(urlWithName);
 
     return fetch(urlWithName)
@@ -567,7 +567,7 @@ async function serverCheck(key) {
 }
 
 async function serverUpdate(name, food) {
-    var urlWithName = url + '?path=Sheet1&action=rsvp&Name=' + encodeURIComponent(name) + '&Food=' + encodeURIComponent(food);
+    var urlWithName = url + '?path=Sheet1&action=rsvp&Name=' + encodeURIComponent(name.toLowerCase()) + '&Food=' + encodeURIComponent(food);
     console.log(urlWithName);
 
     return fetch(urlWithName)
@@ -590,8 +590,6 @@ document.addEventListener('DOMContentLoaded', initialize)
 // TODO list
 // ** client styling (seperate segments)
 
-// how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food). babies don't need extra shuttle space
-
 // fix the shuttles
 
 // different text for if everyone in party says no
@@ -599,7 +597,6 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // put the names in the sheet and format properly
-// data sanitizing / lowercase stuff
 
 // THIS IS THE POINT I CAN UPDATE
 
