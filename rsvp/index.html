@@ -21,7 +21,7 @@
     </table> -->
     <div class="bodyMargin">
       <div id="initialCallout">
-        <h1>Please enter your name to access your RSVP Form or view a completed RSVP</h1>
+        <h2>Please enter your name to access your RSVP Form or view a completed RSVP</h2>
         <div class="emailSubmission">
             <br>
             <input type="text" id="rsvp">
@@ -31,10 +31,11 @@
       <div class="hidden" id="hint">Name not found! Please use the name on your invitation!</div>
       <!-- Wrong answer pops up it will be the name listed on your invitation -->
       <div class="hidden" id="form">
-        <h1 id="attendeesHeader">Hello! We have your party down for these attendees. To start, mark each person's attendance</h1>
+        <h2 id="attendeesHeader">Hello! We have your party down for these attendees. To start, mark each person's attendance</h2>
         <table id="attendees"></table>
         <br>
         <br>
+        <div id="shuttleInfo"></div>
         <table id="shuttle"></table>
         <br>
         <br>
@@ -49,15 +50,16 @@
         <button onclick="submit()">Submit Meal Preference</button>
       </div> -->
 
-      <!-- <table> test table
+      <table>
         <tr>
-          <th>Samuel Levatich</th>
-          <th></th>
+          <th class="namecell">Samuel Levatich</th>
+          <th class="infocell">Can Attend</th>
+          <th class="infocell">Chicken</th>
         <tr>
-            <th>Mimi Santos</th>
-            <th>Can Attend</th>
-            <th><select><option>--</option><option>Can Attend</option><option>Cannot Attend</option></select></th>
-      </table> -->
+            <th class="namecell">Samuel Levatich</th>
+          <th class="infocell">Can Attend</th>
+          <th class="infocell">Chicken</th>
+      </table>
 
     </div>
     <div class="footer"><div class="innerFooter">Handcrafted by Mimi and Sam <3</div></div>

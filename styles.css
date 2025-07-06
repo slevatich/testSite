@@ -145,6 +145,29 @@ th {
     color: rgb(233, 123, 33);
 }
 
+.namecell {
+    color: black;
+    /* color: rgb(231, 60, 148); */
+    /* font: italic; */
+    width: 35%;
+
+}
+
+.infocell {
+    color: black;
+    font-size: 18px;
+    font-family: /*Papyrus,*/'Handlee', 'Delius Swash Caps', Arial, sans-serif;
+    /* font-family: Papyrus,'Handlee', 'Delius Swash Caps', Arial, sans-serif; */
+}
+
+/* rowspan use for the checkbox */
+/* add some explainers, add an h2 to the explainer and also clear that in stageTwo */
+/* name and info cell should be the classes added */
+
+/* .rsvpheader {
+    font-size: 30px;
+} */
+
 p {
     padding: 0px;
     margin: 0px;
