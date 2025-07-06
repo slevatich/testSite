@@ -48,6 +48,7 @@ function attendingOptionList(includeDashes = true)
     }
     select.children[count++].textContent = "Can Attend"
     select.children[count++].textContent = "Cannot Attend"
+    
     return select;
 }
 
@@ -65,18 +66,54 @@ function foodOptionList()
     return select;
 }
 
+var buttonTracker = [];
+function initializeButtonTracker(elemCount)
+{
+    buttonTracker = []
+    for (var i=0; i<elemCount; i++)
+    {
+        buttonTracker.push(0);
+    }
+}
+
+function updateButtonTracker(idx, bit, button)
+{
+    buttonTracker[idx] = bit ? 1 : 0;
+
+    console.log(buttonTracker + " " + bit);
+    for (var tracker of buttonTracker)
+    {
+        if (tracker === 0) {
+            button.disabled = true;
+            return;
+        }
+    }
+
+    button.disabled = false;
+}
+
 function buildInitialUI(elem, elemHeader, data, edit)
 {
     elemHeader.textContent = "Hello! We have your party down for these attendees. To start, mark each person's attendance"
     var selectionArr = []
-    for (var item of data)
+
+    var button = document.createElement('button')
+    initializeButtonTracker(data.length)
+
+
+    for (let [idx, item] of data.entries())
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
         tableHeader.textContent = item.name;
+        console.log(item.name + " ghjdkfs")
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
         var selection = attendingOptionList(); // !edit to do the revised flow but submission is more complex
+        selection.addEventListener('change', (e) => {
+            updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
+        })
+        updateButtonTracker(idx, item.going === 1 || item.going === 0, button);
         selectionArr.push(selection);
         selection.selectedIndex = dataToSelectedIndex(item);
         tableHeader2.appendChild(selection);
@@ -85,7 +122,6 @@ function buildInitialUI(elem, elemHeader, data, edit)
     }
 
     // onsubmit, modify data, call stage2 with the modified data
-    var button = document.createElement('button')
     button.onclick = () => {onSubmitInitialUI(data, selectionArr)};
     button.textContent = "Next"
     elem.appendChild(button);
@@ -146,7 +182,11 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     var selectionArr = []
 
-    for (var item of data)
+    var button = document.createElement('button')
+    initializeButtonTracker(data.length)
+
+
+    for (let [idx, item] of data.entries())
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
@@ -158,6 +198,11 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
         // TODO: actually handle this error
         var tableHeader2 = document.createElement('th');
         var selection = foodOptionList();
+        selection.addEventListener('change', (e) => {
+            updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
+        })
+        console.log(item.food)
+        updateButtonTracker(idx, item.food !== 0 && item.food !== "", button);
         selectionArr.push(selection);
 
         selection.selectedIndex = item.food;
@@ -173,7 +218,6 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     ebutton.textContent = "Back"
     buttonRow.appendChild(ebutton);
 
-    var button = document.createElement('button')
     button.onclick = () => {onSubmitFoodUI(fulldata, selectionArr)};
     button.textContent = "Submit"
     buttonRow.appendChild(button);
