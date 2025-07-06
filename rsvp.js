@@ -36,6 +36,9 @@ function hideLoading()
 async function checkrsvp() {
     var tf = document.getElementById(inputID);
     var savedNameKey = tf.value//.toLowerCase();
+    var hint = document.getElementById(hintID)
+    hint.classList.add("hidden")
+
     // TODO: fix lowercase data sanitization server side
     showLoading()
     var check = await serverCheck(savedNameKey); // this will have a data model
@@ -44,9 +47,8 @@ async function checkrsvp() {
     {
        stageTwo(check, savedNameKey);
     }
-    else if (!attempted) {
-        attempted = true;
-        var hint = document.getElementById(hintID)
+    else {
+        // attempted = true; this was going to be for auto loading I think?
         hint.classList.remove("hidden")
         // if pulled from local storage maybe we clear that?
     }
@@ -449,6 +451,7 @@ async function serverCheck(key) {
         })
         .catch(error => {
             console.error('Fetch error:', error);
+            return null;
         });
 
 }
@@ -475,25 +478,32 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // TODO list
-// ** loading spinners on async calls
-// ** client styling
-// Smaller content things
-    // move this to the main RSVP page
-    // Needs shuttle checkbox (on food page and edit page)
-    // early submit if everyone is a no + different text
-    // hide the top section after you hit the button. refresh takes you back there (add a re-enter name button? back?)
-    // how do we handle babies?
+// ** client styling 
+// how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food)
+
+// Server update for shuttles (extra column, add to the food mutation (10s place and hundreds place. or 0123 in tens place))
+// Add the client checkboxes for the shuttle stuff, no validation is needed I think
+
+// wedding (reception, tornaboda)
+// different text for if everyone in party says no
+// dynamic disabling for the edit view
 
 // put the names in the sheet and format properly
 // data sanitizing / lowercase stuff
-// mobile testing
 
-// Needed but could demo to mimi before / mostly logical
-// dynamic disabling for the edit view
+// THIS IS THE POINT I CAN UPDATE
+
+// mobile testing + fast follows
+
+
+
+
+// Lower Pri for Form
 // fix whatever is happening with local variable storage in safari
-// hinting logic for initial checks
 // server side reject food input outside of 0-4 or whatever
 // email form for additional updates on the submit page?
+// do I want to embed the RSVP on the home page?
+// do we need a button to reshow the name entry? 
 
 // Future TODO
 // footer fixing
