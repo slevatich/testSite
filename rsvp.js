@@ -186,13 +186,26 @@ function dataToSelectedIndex(item, includeDashes = true)
     return item.going === 1 ? 1 : item.going === 0 ? 2 : 0;
 }
 
-function onSubmitInitialUI(originalData, selectionInfo)
+async function onSubmitInitialUI(originalData, selectionInfo)
 {
     console.log(originalData)
     console.log(selectionInfo)
+    var noAttendees = true
     for (var [idx, item] of originalData.entries())
     {
+
         item.going = selectionToRSVP(selectionInfo[idx]);
+        if (item.going === true) noAttendees = false;
+    }
+
+    if (noAttendees)
+    {
+        for (var item of originalData)
+        {
+            showLoading()
+            await serverUpdate(item.name, 0)
+            hideLoading()
+        }
     }
 
     // TODO:
@@ -349,7 +362,15 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     var selectionArr = []
     var foodSelectionArr = []
 
-    var noAttendees = false;
+    var noAttendees = true;
+    for (var item of data)
+    {
+        if (item.going === 1) {
+            noAttendees = false;
+            break;
+        }
+    }
+
     elemHeader.textContent = !noAttendees ? 
     "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
     "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. That said, if any part of your inability to attend is financial Sam and Mimi would love to chat about if some support could make attending possible :)"
@@ -407,49 +428,53 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     var shuttleCheckboxes = []
 
 
-    var shuttleRow1 = document.createElement('tr');
-    var shuttleRowText1 = document.createElement('th');
-    shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
-    shuttleRow1.appendChild(shuttleRowText1)
-    if (edit) {
-
-
-    var shuttleRowInput1 = document.createElement('input')
-    shuttleCheckboxes.push(shuttleRowInput1)
-    shuttleRowInput1.type = "checkbox"
-    shuttleRowInput1.checked = (data[0].shuttle === 2 || data[0].shuttle === 3)
-    shuttleRow1.appendChild(shuttleRowInput1)
-    }
-    else
+    if (!noAttendees || edit)
     {
-        var shuttleRowInput1 = document.createElement('th')
-    // shuttleCheckboxes.push(shuttleRowInput1)
-    shuttleRowInput1.innerText = data[0].shuttle === 2 || data[0].shuttle === 3 ? "Yes" : "No"
-    shuttleRow1.appendChild(shuttleRowInput1)
-    }
-    elem.appendChild(shuttleRow1);
+        var shuttleRow1 = document.createElement('tr');
+        var shuttleRowText1 = document.createElement('th');
+        shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
+        shuttleRow1.appendChild(shuttleRowText1)
+        if (edit) {
 
-    // TODO: fix this to have 2 options for friday
 
-    var shuttleRow2 = document.createElement('tr');
-    var shuttleRowText2 = document.createElement('th');
-    shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
-    shuttleRow2.appendChild(shuttleRowText2)
-    if (edit) {
-        var shuttleRowInput2 = document.createElement('input')
-        shuttleCheckboxes.push(shuttleRowInput2)
-        shuttleRowInput2.type = "checkbox"
-        shuttleRowInput2.checked = (data[0].shuttle === 1 || data[0].shuttle === 3)
-        shuttleRow2.appendChild(shuttleRowInput2)
-    }
-    else
-    {
-        var shuttleRowInput2 = document.createElement('th')
+        var shuttleRowInput1 = document.createElement('input')
+        shuttleCheckboxes.push(shuttleRowInput1)
+        shuttleRowInput1.type = "checkbox"
+        shuttleRowInput1.checked = (data[0].shuttle === 2 || data[0].shuttle === 3)
+        shuttleRow1.appendChild(shuttleRowInput1)
+        }
+        else
+        {
+            var shuttleRowInput1 = document.createElement('th')
         // shuttleCheckboxes.push(shuttleRowInput1)
-        shuttleRowInput2.innerText = data[0].shuttle === 1 || data[0].shuttle === 3 ? "Yes" : "No"
-        shuttleRow2.appendChild(shuttleRowInput2)
+        shuttleRowInput1.innerText = data[0].shuttle === 2 || data[0].shuttle === 3 ? "Yes" : "No"
+        shuttleRow1.appendChild(shuttleRowInput1)
+        }
+        elem.appendChild(shuttleRow1);
+    
+
+        // TODO: fix this to have 2 options for friday
+
+        var shuttleRow2 = document.createElement('tr');
+        var shuttleRowText2 = document.createElement('th');
+        shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
+        shuttleRow2.appendChild(shuttleRowText2)
+        if (edit) {
+            var shuttleRowInput2 = document.createElement('input')
+            shuttleCheckboxes.push(shuttleRowInput2)
+            shuttleRowInput2.type = "checkbox"
+            shuttleRowInput2.checked = (data[0].shuttle === 1 || data[0].shuttle === 3)
+            shuttleRow2.appendChild(shuttleRowInput2)
+        }
+        else
+        {
+            var shuttleRowInput2 = document.createElement('th')
+            // shuttleCheckboxes.push(shuttleRowInput1)
+            shuttleRowInput2.innerText = data[0].shuttle === 1 || data[0].shuttle === 3 ? "Yes" : "No"
+            shuttleRow2.appendChild(shuttleRowInput2)
+        }
+        elem.appendChild(shuttleRow2);
     }
-    elem.appendChild(shuttleRow2);
 
     if (!edit)
     {
@@ -592,9 +617,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // fix the shuttles
 
-// different text for if everyone in party says no
 // dynamic disabling for the edit view
-
 
 
 
