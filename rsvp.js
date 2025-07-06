@@ -151,10 +151,13 @@ function buildInitialUI(elem, elemHeader, data, edit)
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
+        tableHeader.classList.add("namecell");
         tableHeader.textContent = item.name;
         console.log(item.name + " ghjdkfs")
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
+        tableHeader2.classList.add("infocell");
+
         var selection = attendingOptionList(); // !edit to do the revised flow but submission is more complex
         selection.addEventListener('change', (e) => {
             updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
@@ -167,10 +170,12 @@ function buildInitialUI(elem, elemHeader, data, edit)
         elem.appendChild(tableRow)
     }
 
+    var buttonRow = document.getElementById('buttonsTable');
+
     // onsubmit, modify data, call stage2 with the modified data
     button.onclick = () => {onSubmitInitialUI(data, selectionArr)};
     button.textContent = "Next"
-    elem.appendChild(button);
+    buttonRow.appendChild(button);
     // TODO: button must be disabled until all are used
     // TODO: button style needs to be outside this element
 
@@ -250,15 +255,19 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
+        tableHeader.classList.add("namecell");
         tableHeader.textContent = item.name;
         tableRow.appendChild(tableHeader)
         var tableHeaderFilled = document.createElement('th');
+        tableHeaderFilled.classList.add("infocell");
+
         tableHeaderFilled.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
         tableRow.appendChild(tableHeaderFilled);
         // TODO: actually handle this error?
 
 
         var tableHeader2 = document.createElement('th');
+        tableHeader2.classList.add("infocell");
         if (item.baby === 0)
         {
             var selection = foodOptionList();
@@ -273,9 +282,9 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
         }
         else
         {
-            var babyText = document.createElement('th')
-            babyText.innerText = item.baby === 1 ? "Kid's Meal" : "Bites of your food / baby food as appropriate"
-            tableHeader2.appendChild(babyText);
+            // var babyText = document.createElement('th')
+            tableHeader2.innerText = item.baby === 1 ? "Kid's Meal" : "Bites of your food / baby food as appropriate"
+            // tableHeader2.appendChild(babyText);
         }
 
         tableRow.appendChild(tableHeader2)
@@ -679,7 +688,8 @@ document.addEventListener('DOMContentLoaded', initialize)
 // fix the fonts and spacing...
 
 // dynamic disabling for the edit view
-
+// width for left bar should allow for single selection elements to fill the entire right side somehow. be closer to 65%. also feels too wide rn in the triple case. maybe just make it span 2 cells? could get a ratio with columnSpan
+// use margin not line breaks so it can be based on if stuff is in there? maybe a class on the first tablerow. see what works
 
 // with Mimi
 // style review
