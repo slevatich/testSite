@@ -89,9 +89,26 @@ function foodOptionList()
     select.appendChild(document.createElement('option'));
     select.appendChild(document.createElement('option'));
     select.children[0].textContent = "--";
-    select.children[1].textContent = "Chicken"
+    select.children[1].textContent = "Chicken (contains pork)"
     select.children[2].textContent = "Salmon"
     select.children[3].textContent = "Veggie"
+    return select;
+}
+
+function shuttleOptionList(isFriday)
+{
+    var count = 0;
+    var select = document.createElement('select');
+    select.appendChild(document.createElement('option'));
+    select.appendChild(document.createElement('option'));
+    
+    select.children[count++].textContent = "Not Needed"
+    select.children[count++].textContent = "From/To Hotel"
+    if (isFriday) {
+        select.appendChild(document.createElement('option'));
+        select.children[count++].textContent = "From/To Loretito";
+    }
+    
     return select;
 }
 
@@ -271,26 +288,28 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     var shuttleCheckboxes = []
 
+    var elem2 = document.getElementById("shuttle")
+
     var shuttleRow1 = document.createElement('tr');
     var shuttleRowText1 = document.createElement('th');
-    shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
+    shuttleRowText1.innerText = "Friday shuttles (pickup->cathedral->reception->dropoff)"
     shuttleRow1.appendChild(shuttleRowText1)
-    var shuttleRowInput1 = document.createElement('input')
+    var shuttleRowInput1 = shuttleOptionList(true);
     shuttleCheckboxes.push(shuttleRowInput1)
-    shuttleRowInput1.type = "checkbox"
+    // shuttleRowInput1.type = "checkbox"
     shuttleRow1.appendChild(shuttleRowInput1)
-    elem.appendChild(shuttleRow1);
+    elem2.appendChild(shuttleRow1);
 
 
     var shuttleRow2 = document.createElement('tr');
     var shuttleRowText2 = document.createElement('th');
-    shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
+    shuttleRowText2.innerText = "Saturday shuttles (pickup->loretito->dropoff)"
     shuttleRow2.appendChild(shuttleRowText2)
-    var shuttleRowInput2 = document.createElement('input')
+    var shuttleRowInput2 = shuttleOptionList(false)
     shuttleCheckboxes.push(shuttleRowInput2)
-    shuttleRowInput2.type = "checkbox"
+    // shuttleRowInput2.type = "checkbox"
     shuttleRow2.appendChild(shuttleRowInput2)
-    elem.appendChild(shuttleRow2);
+    elem2.appendChild(shuttleRow2);
 
     var buttonRow = document.createElement('tr');
 
@@ -318,9 +337,12 @@ function serverDataFromShuttleInfo(shuttleInfo, baby)
     // technically you could infer this from food being zero? eh
     if (baby === 0 || baby === 1)
     {
-        if (shuttleInfo[0].checked === true && shuttleInfo[1].checked == true) return 30;
-        if (shuttleInfo[0].checked === true && shuttleInfo[1].checked == false) return 20;
-        if (shuttleInfo[0].checked === false && shuttleInfo[1].checked == true) return 10;
+        // info[1].selectedIndex * 30 + info[0].selectedIndex * 10...
+        if (shuttleInfo[0].selectedIndex === 1 && shuttleInfo[1].selectedIndex === 1) return 40;
+        if (shuttleInfo[0].selectedIndex === 2 && shuttleInfo[1].selectedIndex == 1) return 50;
+        if (shuttleInfo[0].selectedIndex === 1 && shuttleInfo[1].selectedIndex == 0) return 10;
+        if (shuttleInfo[0].selectedIndex === 2 && shuttleInfo[1].selectedIndex == 0) return 20;
+        if (shuttleInfo[0].selectedIndex === 0 && shuttleInfo[1].selectedIndex == 1) return 30;
     }
     return 0;
 }
@@ -427,68 +449,73 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     console.log(data)
     var shuttleCheckboxes = []
 
+    var elem2 = document.getElementById("shuttle")
+
 
     if (!noAttendees || edit)
     {
         var shuttleRow1 = document.createElement('tr');
         var shuttleRowText1 = document.createElement('th');
-        shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
+        shuttleRowText1.innerText = "Friday shuttles (pickup->cathedral->reception->dropoff)"
         shuttleRow1.appendChild(shuttleRowText1)
         if (edit) {
 
 
-        var shuttleRowInput1 = document.createElement('input')
-        shuttleCheckboxes.push(shuttleRowInput1)
-        shuttleRowInput1.type = "checkbox"
-        shuttleRowInput1.checked = (data[0].shuttle === 2 || data[0].shuttle === 3)
-        shuttleRow1.appendChild(shuttleRowInput1)
+            var shuttleRowInput1 = shuttleOptionList(true)
+            shuttleCheckboxes.push(shuttleRowInput1)
+            // shuttleRowInput1.type = "checkbox"
+            shuttleRowInput1.selectedIndex = (data[0].shuttle === 1 || data[0].shuttle === 4) ? 1 : (data[0].shuttle === 2 || data[0].shuttle === 5) ? 2 : 0;
+            shuttleRow1.appendChild(shuttleRowInput1)
         }
         else
         {
             var shuttleRowInput1 = document.createElement('th')
-        // shuttleCheckboxes.push(shuttleRowInput1)
-        shuttleRowInput1.innerText = data[0].shuttle === 2 || data[0].shuttle === 3 ? "Yes" : "No"
-        shuttleRow1.appendChild(shuttleRowInput1)
+            // shuttleCheckboxes.push(shuttleRowInput1)
+            shuttleRowInput1.innerText = (data[0].shuttle === 1 || data[0].shuttle === 4) ? "From Hotel" : (data[0].shuttle === 2 || data[0].shuttle === 5) ? "From Loretito" : "Not Needed";
+            shuttleRow1.appendChild(shuttleRowInput1)
         }
-        elem.appendChild(shuttleRow1);
+        elem2.appendChild(shuttleRow1);
     
 
         // TODO: fix this to have 2 options for friday
 
         var shuttleRow2 = document.createElement('tr');
         var shuttleRowText2 = document.createElement('th');
-        shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
+        shuttleRowText2.innerText = "Saturday shuttles (pickup->loretito->dropoff)"
         shuttleRow2.appendChild(shuttleRowText2)
         if (edit) {
-            var shuttleRowInput2 = document.createElement('input')
+            var shuttleRowInput2 = shuttleOptionList(false);
             shuttleCheckboxes.push(shuttleRowInput2)
-            shuttleRowInput2.type = "checkbox"
-            shuttleRowInput2.checked = (data[0].shuttle === 1 || data[0].shuttle === 3)
+            // shuttleRowInput2.type = "checkbox"
+            shuttleRowInput2.selectedIndex = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? 0 : 1;
             shuttleRow2.appendChild(shuttleRowInput2)
         }
         else
         {
             var shuttleRowInput2 = document.createElement('th')
             // shuttleCheckboxes.push(shuttleRowInput1)
-            shuttleRowInput2.innerText = data[0].shuttle === 1 || data[0].shuttle === 3 ? "Yes" : "No"
+            shuttleRowInput2.innerText = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? "Not Needed" : "From Hotel";
             shuttleRow2.appendChild(shuttleRowInput2)
         }
-        elem.appendChild(shuttleRow2);
+        elem2.appendChild(shuttleRow2);
     }
+
+    var elem3 = document.getElementById("buttonsTable")
+
 
     if (!edit)
     {
         var button = document.createElement('button')
         button.onclick = () => {stageTwo(data, null, true)};
         button.textContent = "Edit"
-        elem.appendChild(button);
+        elem3.appendChild(button);
     }
     else
     {
         var button = document.createElement('button')
         button.onclick = () => {onSubmitEdits(data, selectionArr, foodSelectionArr, shuttleCheckboxes)};
         button.textContent = "Submit Edits"
-        elem.appendChild(button);
+        elem3.appendChild(button);
     }
 }
 
@@ -535,6 +562,20 @@ function stageTwo(data, namekey, edit = false, back = false)
     for (var i=0; i<attendeePrevCount; i++)
     {
         attendees.children[0].remove()
+    }
+
+    var attendees2 = document.getElementById("shuttle");
+    const attendeePrevCount2 = attendees2.children.length;
+    for (var i=0; i<attendeePrevCount2; i++)
+    {
+        attendees2.children[0].remove()
+    }
+
+    var attendees3 = document.getElementById("buttonsTable");
+    const attendeePrevCount3 = attendees3.children.length;
+    for (var i=0; i<attendeePrevCount3; i++)
+    {
+        attendees3.children[0].remove()
     }
 
     // what state are we in. This is where we do data processing
@@ -612,15 +653,13 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
-// TODO list
-// ** client styling (seperate segments)
-
-// fix the shuttles
+// fix the fonts and spacing...
 
 // dynamic disabling for the edit view
 
 
-
+// with Mimi
+// style review
 // put the names in the sheet and format properly
 
 // THIS IS THE POINT I CAN UPDATE
@@ -635,7 +674,8 @@ document.addEventListener('DOMContentLoaded', initialize)
 // server side reject food input outside of 0-4 or whatever
 // email form for additional updates on the submit page?
 // do I want to embed the RSVP on the home page?
-// do we need a button to reshow the name entry? 
+// do we need a button to reshow the name entry?
+// selecting friday from loretito should zero out the saturday option for shuttles 
 
 // Future TODO
 // footer fixing
