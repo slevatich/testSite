@@ -212,7 +212,8 @@ async function onSubmitInitialUI(originalData, selectionInfo)
     {
 
         item.going = selectionToRSVP(selectionInfo[idx]);
-        if (item.going === true) noAttendees = false;
+        console.log(item.going + " " + noAttendees);
+        if (item.going === 1) noAttendees = false;
     }
 
     if (noAttendees)
@@ -292,18 +293,20 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     var shuttleRow1 = document.createElement('tr');
     var shuttleRowText1 = document.createElement('th');
-    shuttleRowText1.innerText = "Friday shuttles (pickup->cathedral->reception->dropoff)"
+    shuttleRowText1.innerText = "Friday shuttles \n (pickup->cathedral->reception->dropoff)"
     shuttleRow1.appendChild(shuttleRowText1)
+    var shuttleRowInput1Container = document.createElement('th')
     var shuttleRowInput1 = shuttleOptionList(true);
     shuttleCheckboxes.push(shuttleRowInput1)
     // shuttleRowInput1.type = "checkbox"
-    shuttleRow1.appendChild(shuttleRowInput1)
+    shuttleRowInput1Container.appendChild(shuttleRowInput1)
+    shuttleRow1.appendChild(shuttleRowInput1Container)
     elem2.appendChild(shuttleRow1);
 
 
     var shuttleRow2 = document.createElement('tr');
     var shuttleRowText2 = document.createElement('th');
-    shuttleRowText2.innerText = "Saturday shuttles (pickup->loretito->dropoff)"
+    shuttleRowText2.innerText = "Saturday shuttles \n (pickup->loretito->dropoff)"
     shuttleRow2.appendChild(shuttleRowText2)
     var shuttleRowInput2 = shuttleOptionList(false)
     shuttleCheckboxes.push(shuttleRowInput2)
@@ -311,7 +314,9 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     shuttleRow2.appendChild(shuttleRowInput2)
     elem2.appendChild(shuttleRow2);
 
-    var buttonRow = document.createElement('tr');
+    // var buttonRow = document.createElement('tr');
+
+    var buttonRow = document.getElementById('buttonsTable');
 
     var ebutton = document.createElement('button')
     ebutton.onclick = () => {stageTwo(fulldata, null, false, true)};
@@ -322,7 +327,7 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     button.textContent = "Submit"
     buttonRow.appendChild(button);
 
-    elem.appendChild(buttonRow);
+    // elem.appendChild(buttonRow);
     // additional dietary restrictions please reach out to sam and mimi
 
     // TODO: add a back button that will set the attending data but somehow not have it be submitted? hmm. maybe just call stage2 with another bool that forces us into edit mode if the other data isn't filled in yet. maybe the same bool
@@ -456,7 +461,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     {
         var shuttleRow1 = document.createElement('tr');
         var shuttleRowText1 = document.createElement('th');
-        shuttleRowText1.innerText = "Friday shuttles (pickup->cathedral->reception->dropoff)"
+        shuttleRowText1.innerText = "Friday shuttles \n (pickup->cathedral->reception->dropoff)"
         shuttleRow1.appendChild(shuttleRowText1)
         if (edit) {
 
@@ -465,7 +470,9 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             shuttleCheckboxes.push(shuttleRowInput1)
             // shuttleRowInput1.type = "checkbox"
             shuttleRowInput1.selectedIndex = (data[0].shuttle === 1 || data[0].shuttle === 4) ? 1 : (data[0].shuttle === 2 || data[0].shuttle === 5) ? 2 : 0;
-            shuttleRow1.appendChild(shuttleRowInput1)
+            var shuttleRowInput1Container = document.createElement('th')
+            shuttleRowInput1Container.appendChild(shuttleRowInput1)
+            shuttleRow1.appendChild(shuttleRowInput1Container)
         }
         else
         {
@@ -481,14 +488,16 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
         var shuttleRow2 = document.createElement('tr');
         var shuttleRowText2 = document.createElement('th');
-        shuttleRowText2.innerText = "Saturday shuttles (pickup->loretito->dropoff)"
+        shuttleRowText2.innerText = "Saturday shuttles \n (pickup->loretito->dropoff)"
         shuttleRow2.appendChild(shuttleRowText2)
         if (edit) {
             var shuttleRowInput2 = shuttleOptionList(false);
             shuttleCheckboxes.push(shuttleRowInput2)
             // shuttleRowInput2.type = "checkbox"
             shuttleRowInput2.selectedIndex = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? 0 : 1;
-            shuttleRow2.appendChild(shuttleRowInput2)
+            var shuttleRowInput2Container = document.createElement('th')
+            shuttleRowInput2Container.appendChild(shuttleRowInput2)
+            shuttleRow2.appendChild(shuttleRowInput2Container)
         }
         else
         {
@@ -676,6 +685,8 @@ document.addEventListener('DOMContentLoaded', initialize)
 // do I want to embed the RSVP on the home page?
 // do we need a button to reshow the name entry?
 // selecting friday from loretito should zero out the saturday option for shuttles 
+// enter should trigger submit buttons
+// disable interaction while loading
 
 // Future TODO
 // footer fixing
