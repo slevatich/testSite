@@ -240,6 +240,34 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
         elem.appendChild(tableRow)
     }
 
+    // two checkboxes surrounded by text
+    // TODO write the text
+
+    // These should maybe be outside the table?
+
+    var shuttleCheckboxes = []
+
+    var shuttleRow1 = document.createElement('tr');
+    var shuttleRowText1 = document.createElement('th');
+    shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
+    shuttleRow1.appendChild(shuttleRowText1)
+    var shuttleRowInput1 = document.createElement('input')
+    shuttleCheckboxes.push(shuttleRowInput1)
+    shuttleRowInput1.type = "checkbox"
+    shuttleRow1.appendChild(shuttleRowInput1)
+    elem.appendChild(shuttleRow1);
+
+
+    var shuttleRow2 = document.createElement('tr');
+    var shuttleRowText2 = document.createElement('th');
+    shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
+    shuttleRow2.appendChild(shuttleRowText2)
+    var shuttleRowInput2 = document.createElement('input')
+    shuttleCheckboxes.push(shuttleRowInput2)
+    shuttleRowInput2.type = "checkbox"
+    shuttleRow2.appendChild(shuttleRowInput2)
+    elem.appendChild(shuttleRow2);
+
     var buttonRow = document.createElement('tr');
 
     var ebutton = document.createElement('button')
@@ -247,7 +275,7 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     ebutton.textContent = "Back"
     buttonRow.appendChild(ebutton);
 
-    button.onclick = () => {onSubmitFoodUI(fulldata, selectionArr)};
+    button.onclick = () => {onSubmitFoodUI(fulldata, selectionArr, shuttleCheckboxes)};
     button.textContent = "Submit"
     buttonRow.appendChild(button);
 
@@ -259,7 +287,21 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     // the submit mutation from this function is updating food choices for attending ppl
 }
 
-async function onSubmitFoodUI(optimisticData, foodInfo)
+// app script data appears to allow floats...
+
+function serverDataFromShuttleInfo(shuttleInfo, baby)
+{
+    // technically you could infer this from food being zero? eh
+    if (baby === 0 || baby === 1)
+    {
+        if (shuttleInfo[0].checked === true && shuttleInfo[1].checked == true) return 30;
+        if (shuttleInfo[0].checked === true && shuttleInfo[1].checked == false) return 20;
+        if (shuttleInfo[0].checked === false && shuttleInfo[1].checked == true) return 10;
+    }
+    return 0;
+}
+
+async function onSubmitFoodUI(optimisticData, foodInfo, shuttleInfo)
 {
     console.log(optimisticData);
     var count = 0;
@@ -272,11 +314,15 @@ async function onSubmitFoodUI(optimisticData, foodInfo)
             hideLoading()
         } else
         {
-            var food = foodInfo[count++].selectedIndex;
+            console.log(shuttleInfo + " " + shuttleInfo[0].checked)
+            var serverDataForShuttle = serverDataFromShuttleInfo(shuttleInfo, item.baby)
+            var food = foodInfo[count++].selectedIndex + serverDataForShuttle;
             showLoading()
             await serverUpdate(item.name, food)
             hideLoading()
             item.food = food // optimistic update...
+            item.shuttle = serverDataForShuttle / 10 // optimistic
+            //console.log("logan " + item.shuttle)
         }
     }
 
@@ -342,6 +388,59 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         elem.appendChild(tableRow)
     }
 
+    // These should maybe be outside the table?
+
+    // TODO: change these to yesses if we aren't in edit mode
+    // TODO: use item values
+    console.log(data[0].shuttle + "SHUTTLE")
+
+    var shuttleCheckboxes = []
+
+
+    var shuttleRow1 = document.createElement('tr');
+    var shuttleRowText1 = document.createElement('th');
+    shuttleRowText1.innerText = "Friday shuttles (hotel->cathedral->reception->hotel)"
+    shuttleRow1.appendChild(shuttleRowText1)
+    if (edit) {
+
+
+    var shuttleRowInput1 = document.createElement('input')
+    shuttleCheckboxes.push(shuttleRowInput1)
+    shuttleRowInput1.type = "checkbox"
+    shuttleRowInput1.checked = (data[0].shuttle === 2 || data[0].shuttle === 3)
+    shuttleRow1.appendChild(shuttleRowInput1)
+    }
+    else
+    {
+        var shuttleRowInput1 = document.createElement('th')
+    // shuttleCheckboxes.push(shuttleRowInput1)
+    shuttleRowInput1.innerText = data[0].shuttle === 2 || data[0].shuttle === 3 ? "Yes" : "No"
+    shuttleRow1.appendChild(shuttleRowInput1)
+    }
+    elem.appendChild(shuttleRow1);
+
+    // TODO: fix this to have 2 options for friday
+
+    var shuttleRow2 = document.createElement('tr');
+    var shuttleRowText2 = document.createElement('th');
+    shuttleRowText2.innerText = "Saturday shuttles (hotel->loretito->hotel)"
+    shuttleRow2.appendChild(shuttleRowText2)
+    if (edit) {
+        var shuttleRowInput2 = document.createElement('input')
+        shuttleCheckboxes.push(shuttleRowInput2)
+        shuttleRowInput2.type = "checkbox"
+        shuttleRowInput2.checked = (data[0].shuttle === 1 || data[0].shuttle === 3)
+        shuttleRow2.appendChild(shuttleRowInput2)
+    }
+    else
+    {
+        var shuttleRowInput2 = document.createElement('th')
+        // shuttleCheckboxes.push(shuttleRowInput1)
+        shuttleRowInput2.innerText = data[0].shuttle === 1 || data[0].shuttle === 3 ? "Yes" : "No"
+        shuttleRow2.appendChild(shuttleRowInput2)
+    }
+    elem.appendChild(shuttleRow2);
+
     if (!edit)
     {
         var button = document.createElement('button')
@@ -352,20 +451,21 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     else
     {
         var button = document.createElement('button')
-        button.onclick = () => {onSubmitEdits(data, selectionArr, foodSelectionArr)};
+        button.onclick = () => {onSubmitEdits(data, selectionArr, foodSelectionArr, shuttleCheckboxes)};
         button.textContent = "Submit Edits"
         elem.appendChild(button);
     }
 }
 
-async function onSubmitEdits(originalData, attendanceInfo, foodInfo)
+async function onSubmitEdits(originalData, attendanceInfo, foodInfo, shuttleCheckboxes)
 {
     for (var [idx, item] of originalData.entries())
     {
         item.going = selectionToRSVP(attendanceInfo[idx], false);
         item.food = item.going === 1 ? foodInfo[idx].selectedIndex : 0;
+        item.shuttle = serverDataFromShuttleInfo(shuttleCheckboxes, item.baby) / 10
         showLoading()
-        await serverUpdate(item.name, item.food)
+        await serverUpdate(item.name, item.food + serverDataFromShuttleInfo(shuttleCheckboxes, item.baby))
         hideLoading()
     }
 
@@ -432,7 +532,7 @@ function stageTwo(data, namekey, edit = false, back = false)
 
 
 
-const url = 'https://script.google.com/macros/s/AKfycbxQwQPjnE-DiEV2bW3UukU-721263tlN1vYsYVRKlkaOTm--nF4-Od3ciHXoCoQtx9C/exec';
+const url = 'https://script.google.com/macros/s/AKfycbwhZciFVzkN0wqFPGe9j1x7qroXrGF1hsiW5W_QyZ6mTISq6qB4ocyLjrrKg_fNkUs/exec';
 
 async function serverCheck(key) {
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key);
@@ -479,14 +579,15 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // TODO list
 // ** client styling 
-// how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food)
 
-// Server update for shuttles (extra column, add to the food mutation (10s place and hundreds place. or 0123 in tens place))
+// how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food). babies don't need extra shuttle space
+
 // Add the client checkboxes for the shuttle stuff, no validation is needed I think
 
 // wedding (reception, tornaboda)
 // different text for if everyone in party says no
 // dynamic disabling for the edit view
+
 
 // put the names in the sheet and format properly
 // data sanitizing / lowercase stuff
