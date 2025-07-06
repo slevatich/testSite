@@ -6,6 +6,7 @@ var formID = "form"
 var attendeesID = "attendees"
 var loadingID = "loading"
 var attendeesHeaderID = "attendeesHeader"
+var initialCalloutID = "initialCallout"
 
 var timerID = 0;
 var timerFrame = 0;
@@ -380,6 +381,10 @@ function stageTwo(data, namekey, edit = false, back = false)
         localStorage.setItem(localStorageKey2, namekey);
         console.log(localStorage.getItem(localStorageKey2));
     }
+
+    var initial = document.getElementById(initialCalloutID)
+    initial.classList.add("hidden");
+
     var hint = document.getElementById(hintID);
     hint.classList.add("hidden"); // TODO: add this
 

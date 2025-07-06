@@ -18,11 +18,13 @@
         <th><a href="./registry/index.html">Registry</a></th>
     </table> -->
     <div class="bodyMargin">
-      <h1>Please enter your name to access your RSVP Form</h1>
-      <div class="emailSubmission">
-        <br>
-        <input type="text" id="rsvp">
-        <button onclick="checkrsvp()">Load RSVP</button>
+      <div id="initialCallout">
+        <h1>Please enter your name to access your RSVP Form</h1>
+        <div class="emailSubmission">
+            <br>
+            <input type="text" id="rsvp">
+            <button onclick="checkrsvp()">Load RSVP</button>
+        </div>
       </div>
       <div class="hidden" id="hint">The name is the one on your invitation!</div>
       <!-- Wrong answer pops up it will be the name listed on your invitation -->
