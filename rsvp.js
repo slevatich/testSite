@@ -287,6 +287,13 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     // These should maybe be outside the table?
 
+    var attendees4 = document.getElementById("shuttleInfo");
+    var shuttleInfo = document.createElement("h2");
+    shuttleInfo.innerText = "We are providing shuttles to get you to and from events Friday and Saturday! If anyone in your party plans to utilize the shuttle, please mark the pickup location below!"
+    attendees4.appendChild(shuttleInfo)
+
+
+
     var shuttleCheckboxes = []
 
     var elem2 = document.getElementById("shuttle")
@@ -585,6 +592,13 @@ function stageTwo(data, namekey, edit = false, back = false)
     for (var i=0; i<attendeePrevCount3; i++)
     {
         attendees3.children[0].remove()
+    }
+
+    var attendees4 = document.getElementById("shuttleInfo");
+    const attendeePrevCount4 = attendees4.children.length;
+    for (var i=0; i<attendeePrevCount4; i++)
+    {
+        attendees4.children[0].remove()
     }
 
     // what state are we in. This is where we do data processing
