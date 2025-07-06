@@ -123,7 +123,7 @@ function updateButtonTracker(idx, bit, button)
 
 function buildInitialUI(elem, elemHeader, data, edit)
 {
-    elemHeader.textContent = "Hello! We have your party down for these attendees. To start, mark each person's attendance"
+    elemHeader.textContent = "Hello! We have your party down for these attendees. To start, mark each person's attendance for Friday's festivities"
     var selectionArr = []
 
     var button = document.createElement('button')
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // how do we handle babies? 0/1/2, just determines food options (kids meal, or bites of your food). babies don't need extra shuttle space
 
-// Add the client checkboxes for the shuttle stuff, no validation is needed I think
+// fix the shuttles
 
 // wedding (reception, tornaboda)
 // different text for if everyone in party says no
