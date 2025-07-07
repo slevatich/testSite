@@ -89,7 +89,7 @@ function foodOptionList()
     select.appendChild(document.createElement('option'));
     select.appendChild(document.createElement('option'));
     select.children[0].textContent = "--";
-    select.children[1].textContent = "Chicken (contains pork)"
+    select.children[1].textContent = "Chicken (contains ham)"
     select.children[2].textContent = "Salmon"
     select.children[3].textContent = "Veggie"
     return select;
@@ -226,7 +226,7 @@ async function onSubmitInitialUI(originalData, selectionInfo)
         for (var item of originalData)
         {
             showLoading()
-            await serverUpdate(item.name, 0)
+            await serverUpdate(item.name, -1)
             hideLoading()
         }
     }
@@ -377,6 +377,12 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
     button.textContent = "Submit"
     buttonRow.appendChild(button);
 
+    var hint = document.createElement('div')
+    hint.innerText = "(you can edit this later!)"
+    hint.classList.add("tinyText")
+    buttonRow.appendChild(hint);
+
+
     // elem.appendChild(buttonRow);
     // additional dietary restrictions please reach out to sam and mimi
 
@@ -420,7 +426,7 @@ async function onSubmitFoodUI(optimisticData, foodInfo, shuttleInfo)
             showLoading()
             await serverUpdate(item.name, food)
             hideLoading()
-            item.food = food // optimistic update...
+            item.food = food - serverDataForShuttle// optimistic update...
             item.shuttle = serverDataForShuttle / 10 // optimistic
             //console.log("logan " + item.shuttle)
         }
@@ -450,7 +456,21 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
     elemHeader.textContent = !noAttendees ? 
     "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
-    "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. That said, if any part of your inability to attend is financial Sam and Mimi would love to chat about if some support could make attending possible :)"
+    "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before October 1 2025!"
+
+    // var tableRow0 = document.createElement('tr');
+    // var tableHeader0 = document.createElement('th');
+    // tableHeader0.classList.add("nameCell");
+    // var tableHeader01 = document.createElement('th');
+    // tableHeader01.classList.add("headerCell");
+    // tableHeader01.textContent = "Attending?";
+    // var tableHeader02 = document.createElement('th');
+    // tableHeader02.classList.add("headerCell");
+    // tableHeader02.textContent = "Food?";
+    // tableRow0.appendChild(tableHeader0)
+    // tableRow0.appendChild(tableHeader01)
+    // tableRow0.appendChild(tableHeader02)
+    // elem.appendChild(tableRow0)
 
     for (var item of data)
     {
@@ -484,7 +504,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
             if (item.baby !== 0 || !edit)
             {
-                tableHeader3.textContent = item.baby === 1 ? "Kid's Meal" : item.baby === 2 ? "Whatever the baby eats" : item.food === 1 ? "Chicken" : item.food === 2 ? "Salmon" : item.food === 3 ? "Veggie" : "Error"
+                tableHeader3.textContent = item.baby === 1 ? "Gets Kid's Meal" : item.baby === 2 ? "Parents know what I like :D" : item.food === 1 ? "Wants Chicken" : item.food === 2 ? "Desires Salmon" : item.food === 3 ? "Picked Vegetables" : "Error"
             }
             else
             {
@@ -611,7 +631,12 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     if (!edit)
     {
         var button = document.createElement('button')
-        button.onclick = () => {stageTwo(data, null, true)};
+        var foodScreenSeen = false;
+        for (var item of data)
+        {
+            if (!(item.food === null || item.food === "")) foodScreenSeen = true
+        }
+        button.onclick = () => {stageTwo(data, null, true, noAttendees && !foodScreenSeen)};
         button.textContent = "Edit"
         elem3.appendChild(button);
     }
@@ -630,11 +655,13 @@ async function onSubmitEdits(originalData, attendanceInfo, foodInfo, shuttleChec
     {
         item.going = selectionToRSVP(attendanceInfo[idx], false);
         item.food = item.baby !== 0 ? item.going : item.going === 1 ? foodInfo[idx].selectedIndex : 0;
-        item.shuttle = serverDataFromShuttleInfo(shuttleCheckboxes, item.baby) / 10
+        item.shuttle = item.going === 1 ? serverDataFromShuttleInfo(shuttleCheckboxes, item.baby) / 10 : 0
         showLoading()
-        await serverUpdate(item.name, item.food + serverDataFromShuttleInfo(shuttleCheckboxes, item.baby))
+        await serverUpdate(item.name, item.food + 10 * item.shuttle)
         hideLoading()
     }
+
+    // if noatendees we could take back to page 1 and null out food
 
     stageTwo(originalData, null);
 }
@@ -720,7 +747,7 @@ function stageTwo(data, namekey, edit = false, back = false)
 
 
 
-const url = 'https://script.google.com/macros/s/AKfycbyCQn2PbMB2xf0iEWYt84ETsEBvhw7gXpLmumZ7WLI-ssswY9S6ZK3b-eBOjY7AIzbm/exec';
+const url = 'https://script.google.com/macros/s/AKfycbzIgQbpPHt8Xay2g3EgupN1k-o3C41mihX8Gi3xmGn-c0rMSBjuzYbpSA4p_jM3X_Mt/exec';
 
 async function serverCheck(key) {
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key.toLowerCase());
@@ -766,15 +793,13 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
-// style review w/ mimi
+// edit view dynamic disabling
+// don't allow submitting if food selections aren't valid
+// hide the food box if you switch to cannot attend
 
-// edit view
-//  dynamic disabling
-//  headers for the attendee things
+
 
 // With MIMI: put the names in the sheet and format properly
-
-
 
 // THIS IS THE POINT I CAN UPDATE
 
@@ -783,13 +808,22 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
+
+
+
+
+
+// optional
+// capture back button click to use the web back? good pattern?
+// rig up enter button to submit, or pop up text saying to click the button please :)
+// [viz] the width of the first screen looks stupid in fullscreen mode
+
 // Lower Pri for Form
 // server side reject food input outside of 0-4 or whatever
 // email form for additional updates on the submit page?
 // do I want to embed the RSVP on the home page?
 // do we need a button to reshow the name entry?
 // selecting friday from loretito should zero out the saturday option for shuttles 
-// enter should trigger submit buttons
 // disable interaction while loading
 
 // Future TODO
