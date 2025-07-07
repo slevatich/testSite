@@ -454,6 +454,9 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         }
     }
 
+    var button = document.createElement('button')
+    initializeButtonTracker(data.filter(attendee => attendee.baby === 0).length)
+
     elemHeader.textContent = !noAttendees ? 
     "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
     "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before October 1 2025!"
@@ -472,7 +475,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     // tableRow0.appendChild(tableHeader02)
     // elem.appendChild(tableRow0)
 
-    for (var item of data)
+    for (var [idx, item] of data.entries())
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
@@ -509,6 +512,10 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             else
             {
                 var selection = foodOptionList();
+                selection.addEventListener('change', (e) => {
+                    updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
+                })
+                updateButtonTracker(idx, item.going === 1 || item.going === 0, button);
                 foodSelectionArr.push(selection);
 
                 selection.selectedIndex = item.food;
@@ -630,19 +637,18 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
     if (!edit)
     {
-        var button = document.createElement('button')
+        var button2 = document.createElement('button')
         var foodScreenSeen = false;
         for (var item of data)
         {
             if (!(item.food === null || item.food === "")) foodScreenSeen = true
         }
-        button.onclick = () => {stageTwo(data, null, true, noAttendees && !foodScreenSeen)};
-        button.textContent = "Edit"
-        elem3.appendChild(button);
+        button2.onclick = () => {stageTwo(data, null, true, noAttendees && !foodScreenSeen)};
+        button2.textContent = "Edit"
+        elem3.appendChild(button2);
     }
     else
     {
-        var button = document.createElement('button')
         button.onclick = () => {onSubmitEdits(data, selectionArr, foodSelectionArr, shuttleCheckboxes)};
         button.textContent = "Submit Edits"
         elem3.appendChild(button);
@@ -801,8 +807,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // With MIMI: put the names in the sheet and format properly
 
-// THIS IS THE POINT I CAN UPDATE
-
+// THIS IS THE POINT I CAN PUSH
 // mobile testing + fast follows
 
 
