@@ -138,6 +138,28 @@ function updateButtonTracker(idx, bit, button)
     button.disabled = false;
 }
 
+// based on the can/can't attend values, have an associated selection to hide and show
+// if we hide it, set the tracker properly
+// if we show it just show it
+
+function updateButtonTracker2(idx, bit, childButton, submitButton)
+{
+    if (bit) 
+    {
+        childButton.classList.remove("hidden")
+        updateButtonTracker(idx, childButton.selectedIndex !== 0, submitButton);
+    }
+    else 
+    {
+        childButton.classList.add("hidden")
+        updateButtonTracker(idx, true, submitButton);
+    }
+}
+
+
+
+
+
 function buildInitialUI(elem, elemHeader, data, edit)
 {
     elemHeader.textContent = "Hello! We have your party down for these attendees. To start, mark each person's attendance for Friday's festivities"
@@ -485,6 +507,9 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         var tableHeader2 = document.createElement('th');
         tableHeader2.classList.add("infocell");
         if (item.going !== 1) tableHeader2.classList.add("extrawide")
+
+        var selectionFood = foodOptionList();
+
         if (!edit)
         {
             tableHeader2.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
@@ -494,6 +519,9 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             var selection = attendingOptionList(false);
             selectionArr.push(selection);
             selection.selectedIndex = item.going === 1 ? 0 : 1//item.going === 0 ? 2 : 0;
+            selection.addEventListener('change', (e) => {
+                updateButtonTracker2(idx, e.target.selectedIndex === 0, selectionFood, button);
+            })
             tableHeader2.appendChild(selection);
         }
         tableRow.appendChild(tableHeader2);
@@ -511,19 +539,20 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             }
             else
             {
-                var selection = foodOptionList();
-                selection.addEventListener('change', (e) => {
+                selectionFood.addEventListener('change', (e) => {
                     updateButtonTracker(idx, e.target.selectedIndex !== 0, button);
                 })
                 updateButtonTracker(idx, item.going === 1 || item.going === 0, button);
-                foodSelectionArr.push(selection);
+                foodSelectionArr.push(selectionFood);
 
-                selection.selectedIndex = item.food;
-                tableHeader3.appendChild(selection);
+                selectionFood.selectedIndex = item.food;
+                tableHeader3.appendChild(selectionFood);
             }
             tableRow.appendChild(tableHeader3)
         }
         
+        updateButtonTracker2(idx, item.going === 1, selectionFood, button);
+
         elem.appendChild(tableRow)
     }
 
@@ -798,12 +827,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
-
-// edit view dynamic disabling
-// don't allow submitting if food selections aren't valid
-// hide the food box if you switch to cannot attend
-
-
+// add a column for if the name cannot RSVP
 
 // With MIMI: put the names in the sheet and format properly
 
