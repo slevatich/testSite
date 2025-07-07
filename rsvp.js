@@ -103,7 +103,7 @@ function shuttleOptionList(isFriday)
     select.appendChild(document.createElement('option'));
     
     select.children[count++].textContent = "Not Needed"
-    select.children[count++].textContent = "From/To Hotel"
+    select.children[count++].textContent = "From/To Hilton"
     if (isFriday) {
         select.appendChild(document.createElement('option'));
         select.children[count++].textContent = "From/To Loretito";
@@ -309,26 +309,60 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     var shuttleRow1 = document.createElement('tr');
     var shuttleRowText1 = document.createElement('th');
-    shuttleRowText1.innerText = "Friday shuttles \n (pickup->cathedral->reception->dropoff)"
+    shuttleRowText1.classList.add("namecell");
+    // shuttleRowText1.classList.add("testMargin");
+    // elem2.appendChild(document.createElement('br'))
+    shuttleRowText1.innerText = "Friday shuttles"
     shuttleRow1.appendChild(shuttleRowText1)
+
     var shuttleRowInput1Container = document.createElement('th')
+    shuttleRowInput1Container.rowSpan = "2"
     var shuttleRowInput1 = shuttleOptionList(true);
     shuttleCheckboxes.push(shuttleRowInput1)
-    // shuttleRowInput1.type = "checkbox"
     shuttleRowInput1Container.appendChild(shuttleRowInput1)
     shuttleRow1.appendChild(shuttleRowInput1Container)
+
     elem2.appendChild(shuttleRow1);
+
+
+    var shuttleRowMid1 = document.createElement('tr');
+    var shuttleRowTextMid1 = document.createElement('th');
+    shuttleRowTextMid1.classList.add("namecell");
+    shuttleRowTextMid1.classList.add("infocell");
+    shuttleRowTextMid1.innerText = "(pickup->cathedral->reception->dropoff)"
+    shuttleRowMid1.appendChild(shuttleRowTextMid1)
+
+    elem2.appendChild(shuttleRowMid1);
+
+
+
+
 
 
     var shuttleRow2 = document.createElement('tr');
     var shuttleRowText2 = document.createElement('th');
-    shuttleRowText2.innerText = "Saturday shuttles \n (pickup->loretito->dropoff)"
+    shuttleRowText2.classList.add("namecell");
+    shuttleRowText2.innerText = "Saturday shuttles"
     shuttleRow2.appendChild(shuttleRowText2)
+
+    var shuttleRowInput2Container = document.createElement('th')
+    shuttleRowInput2Container.rowSpan = "2"
     var shuttleRowInput2 = shuttleOptionList(false)
     shuttleCheckboxes.push(shuttleRowInput2)
-    // shuttleRowInput2.type = "checkbox"
-    shuttleRow2.appendChild(shuttleRowInput2)
+    shuttleRowInput2Container.appendChild(shuttleRowInput2)
+    shuttleRow2.appendChild(shuttleRowInput2Container)
+
     elem2.appendChild(shuttleRow2);
+
+    var shuttleRowMid2 = document.createElement('tr');
+    var shuttleRowTextMid2 = document.createElement('th');
+    shuttleRowTextMid2.classList.add("namecell");
+    shuttleRowTextMid2.classList.add("infocell");
+    shuttleRowTextMid2.innerText = "(pickup->loretito->dropoff)"
+    shuttleRowMid2.appendChild(shuttleRowTextMid2)
+
+    elem2.appendChild(shuttleRowMid2);
+
 
     // var buttonRow = document.createElement('tr');
 
@@ -422,9 +456,12 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     {
         var tableRow = document.createElement('tr');
         var tableHeader = document.createElement('th');
+        tableHeader.classList.add("namecell");
         tableHeader.textContent = item.name;
         tableRow.appendChild(tableHeader)
         var tableHeader2 = document.createElement('th');
+        tableHeader2.classList.add("infocell");
+        if (item.going !== 1) tableHeader2.classList.add("extrawide")
         if (!edit)
         {
             tableHeader2.textContent = item.going === 1 ? "Can Attend" : item.going === 0 ? "Cannot Attend" : "Error";
@@ -440,6 +477,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         // TODO: actually handle this error
         if (item.going === 1 || edit) {
             var tableHeader3 = document.createElement('th');
+            tableHeader3.classList.add("infocell")
             // var selection = foodOptionList();
             // selection.selectedIndex = item.food;
             // tableHeader2.appendChild(selection);
@@ -477,34 +515,62 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     {
         var shuttleRow1 = document.createElement('tr');
         var shuttleRowText1 = document.createElement('th');
-        shuttleRowText1.innerText = "Friday shuttles \n (pickup->cathedral->reception->dropoff)"
+        shuttleRowText1.classList.add("namecell");
+        // shuttleRowText1.classList.add("testMargin");
+        elem2.appendChild(document.createElement('br'))
+        shuttleRowText1.innerText = "Friday shuttles"
         shuttleRow1.appendChild(shuttleRowText1)
         if (edit) {
-
 
             var shuttleRowInput1 = shuttleOptionList(true)
             shuttleCheckboxes.push(shuttleRowInput1)
             // shuttleRowInput1.type = "checkbox"
             shuttleRowInput1.selectedIndex = (data[0].shuttle === 1 || data[0].shuttle === 4) ? 1 : (data[0].shuttle === 2 || data[0].shuttle === 5) ? 2 : 0;
             var shuttleRowInput1Container = document.createElement('th')
+            shuttleRowInput1Container.classList.add("infocell");
+
+            shuttleRowInput1Container.rowSpan = "2"
             shuttleRowInput1Container.appendChild(shuttleRowInput1)
             shuttleRow1.appendChild(shuttleRowInput1Container)
         }
         else
         {
             var shuttleRowInput1 = document.createElement('th')
+            shuttleRowInput1.classList.add("infocell");
+            shuttleRowInput1.rowSpan = "2"
+
             // shuttleCheckboxes.push(shuttleRowInput1)
-            shuttleRowInput1.innerText = (data[0].shuttle === 1 || data[0].shuttle === 4) ? "From Hotel" : (data[0].shuttle === 2 || data[0].shuttle === 5) ? "From Loretito" : "Not Needed";
+            shuttleRowInput1.innerText = (data[0].shuttle === 1 || data[0].shuttle === 4) ? "From/To Hilton" : (data[0].shuttle === 2 || data[0].shuttle === 5) ? "From/To Loretito" : "Not Needed";
             shuttleRow1.appendChild(shuttleRowInput1)
         }
         elem2.appendChild(shuttleRow1);
     
 
-        // TODO: fix this to have 2 options for friday
+        var shuttleRowMid1 = document.createElement('tr');
+        var shuttleRowTextMid1 = document.createElement('th');
+        shuttleRowTextMid1.classList.add("namecell");
+        shuttleRowTextMid1.classList.add("infocell");
+        shuttleRowTextMid1.innerText = "(pickup->cathedral->reception->dropoff)"
+        shuttleRowMid1.appendChild(shuttleRowTextMid1)
+
+        elem2.appendChild(shuttleRowMid1);
+
+
+
+
+    
+        
+
+
+
+
+
+
 
         var shuttleRow2 = document.createElement('tr');
         var shuttleRowText2 = document.createElement('th');
-        shuttleRowText2.innerText = "Saturday shuttles \n (pickup->loretito->dropoff)"
+        shuttleRowText2.classList.add("namecell");
+        shuttleRowText2.innerText = "Saturday shuttles"
         shuttleRow2.appendChild(shuttleRowText2)
         if (edit) {
             var shuttleRowInput2 = shuttleOptionList(false);
@@ -512,17 +578,31 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             // shuttleRowInput2.type = "checkbox"
             shuttleRowInput2.selectedIndex = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? 0 : 1;
             var shuttleRowInput2Container = document.createElement('th')
+            shuttleRowInput2Container.classList.add("infocell");
+
+            shuttleRowInput2Container.rowSpan = "2"
             shuttleRowInput2Container.appendChild(shuttleRowInput2)
             shuttleRow2.appendChild(shuttleRowInput2Container)
         }
         else
         {
             var shuttleRowInput2 = document.createElement('th')
+            shuttleRowInput2.classList.add("infocell");
+            shuttleRowInput2.rowSpan = "2"
             // shuttleCheckboxes.push(shuttleRowInput1)
-            shuttleRowInput2.innerText = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? "Not Needed" : "From Hotel";
+            shuttleRowInput2.innerText = (data[0].shuttle === 0 || data[0].shuttle === 1 || data[0].shuttle === 2) ? "Not Needed" : "From/To Hilton";
             shuttleRow2.appendChild(shuttleRowInput2)
         }
         elem2.appendChild(shuttleRow2);
+
+        var shuttleRowMid2 = document.createElement('tr');
+        var shuttleRowTextMid2 = document.createElement('th');
+        shuttleRowTextMid2.classList.add("namecell");
+        shuttleRowTextMid2.classList.add("infocell");
+        shuttleRowTextMid2.innerText = "(pickup->loretito->dropoff)"
+        shuttleRowMid2.appendChild(shuttleRowTextMid2)
+
+        elem2.appendChild(shuttleRowMid2);
     }
 
     var elem3 = document.getElementById("buttonsTable")
@@ -685,15 +765,16 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 
-// fix the fonts and spacing...
 
-// dynamic disabling for the edit view
-// width for left bar should allow for single selection elements to fill the entire right side somehow. be closer to 65%. also feels too wide rn in the triple case. maybe just make it span 2 cells? could get a ratio with columnSpan
-// use margin not line breaks so it can be based on if stuff is in there? maybe a class on the first tablerow. see what works
+// style review w/ mimi
 
-// with Mimi
-// style review
-// put the names in the sheet and format properly
+// edit view
+//  dynamic disabling
+//  headers for the attendee things
+
+// With MIMI: put the names in the sheet and format properly
+
+
 
 // THIS IS THE POINT I CAN UPDATE
 
@@ -703,7 +784,6 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 
 // Lower Pri for Form
-// fix whatever is happening with local variable storage in safari
 // server side reject food input outside of 0-4 or whatever
 // email form for additional updates on the submit page?
 // do I want to embed the RSVP on the home page?
@@ -714,3 +794,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // Future TODO
 // footer fixing
+
+
+// Bleh
+// fix whatever is happening with local variable storage in safari

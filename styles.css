@@ -153,6 +153,14 @@ th {
 
 }
 
+.extrawide {
+    width: 40%;
+}
+
+.testMargin {
+    margin-top: 20px;
+}
+
 .infocell {
     color: black;
     font-size: 18px;
