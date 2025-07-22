@@ -782,7 +782,7 @@ function stageTwo(data, namekey, edit = false, back = false)
 
 
 
-const url = 'https://script.google.com/macros/s/AKfycbzuNu3sdQ4I3i6JR5OiDwIcMU28EYcvRDabFKGP_heu8oGlU1ttFTWVVR6OcTxPub8J/exec';
+const url = 'https://script.google.com/macros/s/AKfycbwZesBrITnqNV_6oG6ZSfEuj-6NSPbTVIA3e0-G-c-YG_RYw-N63l2nkwa7lchvLfDa/exec';
 
 async function serverCheck(key) {
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key.toLowerCase());
