@@ -320,8 +320,13 @@ function buildFoodUI(elem, elemHeader, fulldata, data)
 
     var attendees4 = document.getElementById("shuttleInfo");
     var shuttleInfo = document.createElement("h2");
-    shuttleInfo.innerText = "We are providing shuttles to get you to and from events Friday and Saturday! If anyone in your party plans to utilize the shuttle, please mark the pickup location below!"
+    shuttleInfo.innerText = "We are providing shuttles to get you to and from events Friday and Saturday! If anyone in your party plans to utilize the shuttle, please mark the pickup location below!"//\nAs mentioned on the Travel page, the Hilton is the only hotel for which we will have a block reserved. You are welcome to take the shuttle even if not staying there, you will just need to uber to and from the Hilton as that will be the pick up and drop off point."
     attendees4.appendChild(shuttleInfo)
+    var shuttleInfo2 = document.createElement("h3");
+    shuttleInfo2.classList.add("noTopMargin")
+
+    shuttleInfo2.innerText = "As mentioned on the Travel page, the Hilton is the only hotel for which we will have a block reserved. You are welcome to take the shuttle even if not staying there, you will just need to uber to and from the Hilton as that will be the pick up and drop off point"
+    attendees4.appendChild(shuttleInfo2)
 
 
 
