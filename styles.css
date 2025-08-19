@@ -356,7 +356,14 @@ button {
     background-size: 100px 100%;
     padding-top: 55px;
     padding-bottom: 25px;
-    position: relative;
+    /* position: relative; */
+}
+
+.webflex {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* flex-shrink: 1; */
 }
 
 .innerFooter {
@@ -384,6 +391,10 @@ button {
 .bodyMargin {
     margin-left: 50px;
     margin-right: 50px;
+}
+
+.flexgrow {
+    flex-grow: 1;
 }
 
 h1 {
