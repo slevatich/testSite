@@ -54,6 +54,29 @@ async function checkrsvp() {
     }
 }
 
+async function addemail() {
+    var tf = document.getElementById('email');
+    var email = tf.value//.toLowerCase();
+    // var hint = document.getElementById(hintID)
+    // hint.classList.add("hidden")
+
+    // TODO: fix lowercase data sanitization server side
+    showLoading()
+    var check = await emailAdd(email); // this will have a data model
+    hideLoading()
+
+        var tf2 = document.getElementById('emailresult');
+    tf2.classList.remove('hidden');
+        var tf3 = document.getElementById('emailbox');
+        tf3.classList.add('hidden');
+
+
+    // if (check !== null)
+    // {
+    //    stageTwo(check, savedNameKey);
+    // }
+}
+
 function initialize() {
     var key = localStorage.getItem(localStorageKey2);
     console.log(key + " " + localStorageKey2)
@@ -77,7 +100,7 @@ function attendingOptionList(includeDashes = true)
     }
     select.children[count++].textContent = "Can Attend"
     select.children[count++].textContent = "Cannot Attend"
-    
+
     return select;
 }
 
@@ -101,14 +124,14 @@ function shuttleOptionList(isFriday)
     var select = document.createElement('select');
     select.appendChild(document.createElement('option'));
     select.appendChild(document.createElement('option'));
-    
+
     select.children[count++].textContent = "Not Needed"
     select.children[count++].textContent = "From/To Hilton"
     if (isFriday) {
         select.appendChild(document.createElement('option'));
         select.children[count++].textContent = "From/To Loretito";
     }
-    
+
     return select;
 }
 
@@ -144,12 +167,12 @@ function updateButtonTracker(idx, bit, button)
 
 function updateButtonTracker2(idx, bit, childButton, submitButton)
 {
-    if (bit) 
+    if (bit)
     {
         childButton.classList.remove("hidden")
         updateButtonTracker(idx, childButton.selectedIndex !== 0, submitButton);
     }
-    else 
+    else
     {
         childButton.classList.add("hidden")
         updateButtonTracker(idx, true, submitButton);
@@ -219,7 +242,7 @@ function selectionToRSVP(selection, includeDashes = true)
     }
     if (selection.selectedIndex == 1) return 1
     if (selection.selectedIndex == 2) return 0
-    
+
     console.log("ERROR2")
     return -1
 }
@@ -484,7 +507,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     var button = document.createElement('button')
     initializeButtonTracker(data.filter(attendee => attendee.baby === 0).length)
 
-    elemHeader.textContent = !noAttendees ? 
+    elemHeader.textContent = !noAttendees ?
     "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
     "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before October 1 2025!"
 
@@ -555,7 +578,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             }
             tableRow.appendChild(tableHeader3)
         }
-        
+
         updateButtonTracker2(idx, item.going === 1, selectionFood, button);
 
         elem.appendChild(tableRow)
@@ -605,7 +628,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
             shuttleRow1.appendChild(shuttleRowInput1)
         }
         elem2.appendChild(shuttleRow1);
-    
+
 
         var shuttleRowMid1 = document.createElement('tr');
         var shuttleRowTextMid1 = document.createElement('th');
@@ -619,8 +642,8 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
 
 
-    
-        
+
+
 
 
 
@@ -664,6 +687,19 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         shuttleRowMid2.appendChild(shuttleRowTextMid2)
 
         elem2.appendChild(shuttleRowMid2);
+
+        // email stuff
+        if (!edit)
+        {
+            // form takes care of hiding the inner children. will persist until a refresh
+            var bb = document.getElementById("emailbigbox");
+            bb.classList.remove('hidden');
+        }
+        else
+        {
+            var bb = document.getElementById("emailbigbox");
+            bb.classList.add('hidden');
+        }
     }
 
     var elem3 = document.getElementById("buttonsTable")
@@ -727,6 +763,10 @@ function stageTwo(data, namekey, edit = false, back = false)
     var form = document.getElementById(formID);
     form.classList.remove("hidden");
 
+    var emailbox = document.getElementById('emailbigbox')
+    emailbox.classList.add("hidden");
+    // hide by default
+
     var attendeesHeader = document.getElementById(attendeesHeaderID);
     var attendees = document.getElementById(attendeesID);
     console.log("child count" + attendees.children.length)
@@ -758,7 +798,7 @@ function stageTwo(data, namekey, edit = false, back = false)
     }
 
     // what state are we in. This is where we do data processing
-    // if we ever see a null attending field, 
+    // if we ever see a null attending field,
 
     console.log("testin")
     for (var item of data)
@@ -830,6 +870,21 @@ async function serverUpdate(name, food) {
 
 }
 
+async function emailAdd(email)
+{
+    var urlWithName = url + '?path=Sheet2&action=email&Email=' + encodeURIComponent(name.toLowerCase());
+    return fetch(urlWithName)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .catch(error => {
+            console.error('Update error:', error);
+        });
+}
+
 document.addEventListener('DOMContentLoaded', initialize)
 
 
@@ -859,7 +914,7 @@ document.addEventListener('DOMContentLoaded', initialize)
 // email form for additional updates on the submit page?
 // do I want to embed the RSVP on the home page?
 // do we need a button to reshow the name entry?
-// selecting friday from loretito should zero out the saturday option for shuttles 
+// selecting friday from loretito should zero out the saturday option for shuttles
 // disable interaction while loading
 
 // Future TODO
