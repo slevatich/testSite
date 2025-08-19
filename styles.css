@@ -88,6 +88,21 @@ table {
     margin-bottom: 30px;
 }
 
+.tregistry {
+    font-size: 30px; /* pacifico seems to have 30px padding below and above for this font */
+    width: 20%;
+    text-align: center;
+    margin: auto;
+    color: rgb(231, 60, 148);
+    background-color: rgb(255, 247, 231);
+    /* float: left; */
+    /* padding-bottom: 50px; */
+    font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
+    font: bold;
+    /* display: inline-block; */
+    margin-bottom: 30px;
+} 
+
 .v {
     background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower\ copy.png);
     width: 38%;
