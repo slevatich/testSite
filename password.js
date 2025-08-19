@@ -22,9 +22,9 @@ function checkpassword() {
             window.location.href = "index.html"
         }, 2500);
 
-        var left = document.getElementById("leftCircle");
+        var left = document.getElementById("leftCircle2");
         left.classList.add("leftAnimating");
-        var right = document.getElementById("rightCircle");
+        var right = document.getElementById("rightCircle2");
         right.classList.add("rightAnimating");
         var left2 = document.getElementById("leftCircleText");
         left2.classList.add("leftAnimatingText");
@@ -33,10 +33,10 @@ function checkpassword() {
         var right3 = document.getElementById("passwordTitle");
         right3.classList.add("textAnimating");
 
-        
+
     }
-    else 
-    {        
+    else
+    {
         // TODO error shake (check save the date)
         tf.value = ""
     }

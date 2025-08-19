@@ -316,13 +316,13 @@ button {
 }
 
 @keyframes slideToTheLeft {
-    from {left: -1300px;}
-    to {left: -2000px;}
+    from {left: -140%;}
+    to {left: -250%;}
   }
 
   @keyframes slideToTheRight {
-    from {right: -1300px;}
-    to {right: -2000px;}
+    from {right: -140%;}
+    to {right: -250%;}
   }
 
   @keyframes slideToTheLeftText {
@@ -372,6 +372,33 @@ button {
     right: -1300px;
     background-color: rgb(233, 123, 33);
     width: 2000px;
+    height: 300%;
+    top: 60px;
+    border-radius: 400px;
+    z-index: -10;
+}
+
+#leftCircle2 {
+    position: fixed;
+    left: -140%;
+    background-color: rgb(231, 60, 148);
+    width: 210%;
+    min-width: 1180px;
+    /* max-width: 2000px; */
+    height: 300%;
+    top: 30px;
+    border-radius: 400px;
+    z-index: -10;
+}
+
+/* overlap, this one on top */
+#rightCircle2 {
+    position: fixed;
+    right: -140%;
+    background-color: rgb(233, 123, 33);
+    width: 210%;
+    min-width: 1180px;
+    /* max-width: 2000px; */
     height: 300%;
     top: 60px;
     border-radius: 400px;
