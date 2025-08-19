@@ -787,7 +787,9 @@ function stageTwo(data, namekey, edit = false, back = false)
 
 
 
-const url = 'https://script.google.com/macros/s/AKfycbwZesBrITnqNV_6oG6ZSfEuj-6NSPbTVIA3e0-G-c-YG_RYw-N63l2nkwa7lchvLfDa/exec';
+const url = 'https://script.google.com/macros/s/AKfycbzcYEKlokJgXPldxv44ujsRVSwclMVqJehgeAYo9UCbohIQxMHfxskm4rQ5Ba4gTbaE/exec';
+
+// TODO: action=email
 
 async function serverCheck(key) {
     var urlWithName = url + '?path=Sheet1&action=query&Name=' + encodeURIComponent(key.toLowerCase());
