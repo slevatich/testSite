@@ -17,7 +17,7 @@ body {
     margin: 0;
 }
 
-/* 
+/*
     Font updates
 */
 
@@ -101,7 +101,7 @@ table {
     font: bold;
     /* display: inline-block; */
     margin-bottom: 30px;
-} 
+}
 
 .v {
     background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower\ copy.png);
@@ -134,10 +134,60 @@ table {
     top: 10px;
 }
 
+/* ok we want to just cap the width and have them be clustered around the title */
+.headerflex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.flowerLeft {
+    flex-grow: 1;
+
+    height: 80px;
+
+    background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower\ copy.png);
+    background-size: 100%;
+
+    background-position: left;
+    /* top: 30px; */
+
+}
+
+.flowerRight {
+    flex-grow: 1;
+
+    height: 80px;
+
+    background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower.png);
+    background-size: 100%;
+
+    background-position: right;
+    background-repeat: none;
+}
+
+.headerTitle {
+    font-size: 60px; /* pacifico seems to have 30px padding below and above for this font */
+    /* width: 20%; */
+    text-align: center;
+    /* margin: auto; */
+    color: rgb(231, 60, 148);
+    background-color: rgb(255, 247, 231);
+    /* float: left; */
+    /* padding-bottom: 50px; */
+    font-family: Pacifico, /*'Sacramento',*/ 'Brush Script MT', cursive; /* Lucida Handwriting */
+    font: bold;
+    /* display: inline-block; */
+    /* margin-bottom: 30px; */
+
+
+    /* width, auto margin, margin bottom */
+}
+
 /* 105 - 3 == 102 / 2  */
 /* .v {
     background-color: #004b13;
-    margin-top: 51px; 
+    margin-top: 51px;
     width: 40%;
     font-size: 2px;
     text-align: left;
