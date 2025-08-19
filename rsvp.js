@@ -923,3 +923,48 @@ document.addEventListener('DOMContentLoaded', initialize)
 
 // Bleh
 // fix whatever is happening with local variable storage in safari
+
+
+
+
+// For the bee:
+// need a way to track if an element is being hovered (css you do :hover, but I dont think that can be programatic)
+// once it is I need to have a buffer of where its aiming and it will move some amount per frame (use waits)
+// make the path a bit windy, add some sustained noise perpendicular to direction?
+// translating between cursor's position in the document
+// check if it has reached the flower it wants (diff bees want diff colors)
+// somehow save the bee position for when you click to a new tab
+
+// for mobile maybe it just follows clicks near enough to it
+// this I could do now!
+
+// function meander()
+// {
+//     var bee = document.getElementById('beeOuter');
+//     // get current mouse position
+//     // set the left and top of the beeOuter as a goal
+//     // TODO how to access the current left and top of bee?
+//     moveTowardTarget(bee.left, bee.top, click.top, click.left, 0);
+// }
+
+// const timeToMeander = 2; // seconds
+// const updateRate = 30; // fps
+// function moveTowardTarget(var initialLeft, var initialTop, var targetTop, var targetLeft, var t)
+// {
+//     if (t == 1) return; // all done!
+
+//     // lerp left with the variable t
+//     // add random noise in the line perpendicular direction of some small value
+
+//     // set the position
+
+//     // sleep for 1/updateRate, with t value add of that time divided by 2
+//     var rate = 1 / updateRate;
+//     // rate seconds later, call this:
+//     // moveTowardTarget(initialLeft, initialTop, targetTop, targetLeft, t + rate)
+// }
+
+// Knowledge needed:
+// access style props of an element
+// access the current mouse pointer location
+// async run a function after sleeping for a time value
