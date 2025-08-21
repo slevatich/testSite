@@ -148,9 +148,12 @@ table {
 
     background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower\ copy.png);
     background-size: 100%;
+    background-repeat: no-repeat;
 
-    background-position: left;
+    background-position-x: 0;
+    background-position-y: center;
     /* top: 30px; */
+    margin-top: 20px;
 
 }
 
@@ -160,6 +163,7 @@ table {
     height: 80px;
 
     background-image: url(imgs/WeddingWebsiteSamBadHeaderFlower.png);
+    background-repeat: no-repeat;
     background-size: 100%;
 
     background-position: right;
