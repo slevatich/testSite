@@ -32,6 +32,8 @@ function checkpassword() {
         right2.classList.add("rightAnimatingText");
         var right3 = document.getElementById("passwordTitle");
         right3.classList.add("textAnimating");
+        var right4 = document.getElementById("passwordTitle3");
+        right4.classList.add("textAnimating");
 
 
     }

@@ -300,6 +300,14 @@ button {
     font-size: 20px;
 }
 
+#passwordTitle3 {
+    display: block;
+    margin: auto;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+}
+
 .textAnimating {
     animation-name: textColor;
     animation-duration: 3s;
