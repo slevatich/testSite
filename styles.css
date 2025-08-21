@@ -419,12 +419,22 @@ button {
     left: -140%;
     background-color: rgb(231, 60, 148);
     width: 210%;
-    min-width: 1180px;
+    /* min-width: 1180px; */
     /* max-width: 2000px; */
     height: 300%;
     top: 30px;
     border-radius: 400px;
     z-index: -10;
+}
+
+@media (max-width: 700px) {
+    #leftCircle2 {
+        left: -70%;
+        width: 150%;
+        border-radius: 330px;
+        height: 200%;
+        /* min-width: 1180px; */
+    }
 }
 
 /* overlap, this one on top */
@@ -433,12 +443,22 @@ button {
     right: -140%;
     background-color: rgb(233, 123, 33);
     width: 210%;
-    min-width: 1180px;
+    /* min-width: 1180px; */
     /* max-width: 2000px; */
     height: 300%;
     top: 60px;
     border-radius: 400px;
     z-index: -10;
+}
+
+@media (max-width: 700px) {
+    #rightCircle2 {
+        right: -70%;
+        width: 150%;
+        border-radius: 330px;
+        height: 200%;
+        /* min-width: 1180px; */
+    }
 }
 
 #leftCircleText {
@@ -456,6 +476,13 @@ button {
     text-align: left;
 }
 
+@media (max-width: 500px) {
+    #leftCircleText {
+        left: 20px;
+        font-size: 20px;
+    }
+}
+
 #rightCircleText {
     position: fixed;
     right: 50px;
@@ -470,6 +497,13 @@ button {
     color: white;
     font-size: 30px;
     text-align: right;
+}
+
+@media (max-width: 500px) {
+    #rightCircleText {
+        right: 20px;
+        font-size: 20px;
+    }
 }
 
 .footer {
