@@ -68,6 +68,16 @@ th {
     font-size: 30px;
 }
 
+@media (max-width: 700px) {
+  th {
+    font-size: 18px;
+
+  }
+
+}
+
+
+
 table {
     width: 100%;
     background-color: rgb(255, 247, 231);
@@ -549,4 +559,13 @@ width: 80px;
 
 #bee:hover {
     background-color: green;
+}
+
+@media (max-width: 600px) {
+  .headerTitle {
+    font-size: 40px;
+    margin-top: 10px;
+
+    /* TODO needs some vertical padding to still be centered in the thing */
+  }
 }

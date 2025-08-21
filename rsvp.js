@@ -1000,5 +1000,8 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // Today's hitlist
 // mobile rendering
 //// media query for tabs and titles
+//// images
+//// password page...
+//// rsvp page table rendering to flexbox
 // spanish rsvp
 // honeyfund work
