@@ -872,7 +872,7 @@ async function serverUpdate(name, food) {
 
 async function emailAdd(email)
 {
-    var urlWithName = url + '?path=Sheet2&action=email&Email=' + encodeURIComponent(name.toLowerCase());
+    var urlWithName = url + '?path=Sheet2&action=email&Email=' + encodeURIComponent(email.toLowerCase());
     return fetch(urlWithName)
         .then(response => {
             if (!response.ok) {
@@ -968,3 +968,6 @@ document.addEventListener('DOMContentLoaded', initialize)
 // access style props of an element
 // access the current mouse pointer location
 // async run a function after sleeping for a time value
+
+
+// TODOS from today
