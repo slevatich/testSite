@@ -71,10 +71,24 @@ th {
 @media (max-width: 700px) {
   th {
     font-size: 18px;
-
   }
-
 }
+
+.threebyfour
+{
+    width: 400px;
+    height: 300px;
+}
+
+@media (max-width: 600px)
+{
+    .threebyfour
+    {
+        width: 300px;
+        height: 225px;
+    }
+}
+
 
 
 
@@ -485,7 +499,7 @@ button {
     /* position: absolute; */
     /* top: 40px; */
     /* width: 100%; */
-    width: 360px;
+    width: 310px;
     margin: auto;
     /* margin-left: 50%; */
     /* margin-right: 50%; */
@@ -505,6 +519,15 @@ button {
 .bodyMargin {
     margin-left: 50px;
     margin-right: 50px;
+}
+
+@media (max-width: 400px)
+{
+    .bodyMargin {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
 }
 
 .flexgrow {

@@ -998,10 +998,7 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // need to set these all inline tho, not with style sheet
 
 // Today's hitlist
-// mobile rendering
-//// media query for tabs and titles
-//// images
-//// password page...
-//// rsvp page table rendering to flexbox
+// mobile rendering: rsvp page table rendering to flexbox
+// media query version of the password page with diff params and text sizes
 // spanish rsvp
-// honeyfund work
+// honeyfund work (o otro)
