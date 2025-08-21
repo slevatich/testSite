@@ -356,20 +356,47 @@ button {
     to {left: -250%;}
   }
 
+  @media (max-width: 700px) {
+  @keyframes slideToTheLeft {
+    from {left: -70%;}
+    to {left: -170%;}
+  }
+
   @keyframes slideToTheRight {
     from {right: -140%;}
     to {right: -250%;}
   }
+
+   @media (max-width: 700px) {
+  @keyframes slideToTheRight {
+    from {right: -70%;}
+    to {right: -170%;}
+  }
+}
 
   @keyframes slideToTheLeftText {
     from {left: 50px;}
     to {left: -700px;}
   }
 
+  @media (max-width: 500px) {
+  @keyframes slideToTheLeftText {
+    from {left: 20px;}
+    to {left: -500px;}
+  }
+}
+
   @keyframes slideToTheRightText {
     from {right: 50px;}
     to {right: -700px;}
   }
+
+  @media (max-width: 500px) {
+  @keyframes slideToTheRightText {
+    from {right: 20px;}
+    to {right: -500px;}
+  }
+}
 
 .leftAnimating {
     animation-name: slideToTheLeft;

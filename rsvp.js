@@ -999,7 +999,6 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 
 // Today's hitlist
 // web: make the password field not autocorrect (and rsvp entry field)
-// web: upload everything and test mobile stuff!!
 // web: mobile rendering: rsvp page table rendering to flexbox
 // web: honeyfund work (o otro)
 // web: few db todos
