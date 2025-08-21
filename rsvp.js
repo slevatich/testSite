@@ -938,36 +938,67 @@ document.addEventListener('DOMContentLoaded', initialize)
 // for mobile maybe it just follows clicks near enough to it
 // this I could do now!
 
-// function meander()
-// {
-//     var bee = document.getElementById('beeOuter');
-//     // get current mouse position
-//     // set the left and top of the beeOuter as a goal
-//     // TODO how to access the current left and top of bee?
-//     moveTowardTarget(bee.left, bee.top, click.top, click.left, 0);
-// }
+function meander(event)
+{
+    var bee = document.getElementById('beeOuter');
+    // get current mouse position
+    // set the left and top of the beeOuter as a goal
+    // TODO how to access the current left and top of bee?
+    console.log(event.clientX, event.clientY);
+    moveTowardTarget(bee, bee.style.left.substring(0,bee.style.left.length-2), bee.style.top.substring(0,bee.style.top.length-2), event.clientY - 40, event.clientX - 40, 0);
+}
 
-// const timeToMeander = 2; // seconds
-// const updateRate = 30; // fps
-// function moveTowardTarget(var initialLeft, var initialTop, var targetTop, var targetLeft, var t)
-// {
-//     if (t == 1) return; // all done!
+const timeToMeander = 3; // seconds
+const updateRate = 30; // fps
+var count = 0;
+function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t)
+{
+    if (t >= 1) return
+    // if (count == 5) return; // all done!
+    count++;
+    console.log(initialLeft, initialTop, targetTop, targetLeft, t);
 
-//     // lerp left with the variable t
-//     // add random noise in the line perpendicular direction of some small value
+    // lerp left with the variable t
+    // TODO add random noise in the line perpendicular direction of some small value
+    var rate = 1 / updateRate;
+    var newT = t + rate / timeToMeander;
 
-//     // set the position
+    var newLeft = +initialLeft + (targetLeft - initialLeft) * t
+    var newTop = +initialTop + +((targetTop - initialTop) * t)
 
-//     // sleep for 1/updateRate, with t value add of that time divided by 2
-//     var rate = 1 / updateRate;
-//     // rate seconds later, call this:
-//     // moveTowardTarget(initialLeft, initialTop, targetTop, targetLeft, t + rate)
-// }
+    console.log(newLeft, newTop);
+    // set the position
+    bee.style.left = newLeft + "px"
+    bee.style.top = newTop + "px"
+
+    // sleep for 1/updateRate, with t value add of that time divided by 2
+    // rate seconds later, call this:
+    setTimeout(() => {
+      moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, newT)
+    }, rate)
+}
 
 // Knowledge needed:
 // access style props of an element
-// access the current mouse pointer location
+// access the current mouse pointer location (mousemove.pageX or pageY) [probably not screenX screenY]
 // async run a function after sleeping for a time value
 
+// document.addEventListener('mousemove', function(event) {
+    //   const x = event.clientX;
+    //   const y = event.clientY;
+    //   document.getElementById('output').textContent = `Mouse Position: (${x}, ${y})`;
+    // });
 
-// TODOS from today
+    // setTimeout(() => {
+//   console.log("Runs after 2 seconds");
+// }, 2000);
+
+// element.style.left
+// element.style.top
+// need to set these all inline tho, not with style sheet
+
+// Today's hitlist
+// the bee
+// mobile rendering
+// spanish rsvp
+// honeyfund work
