@@ -998,7 +998,19 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // need to set these all inline tho, not with style sheet
 
 // Today's hitlist
-// mobile rendering: rsvp page table rendering to flexbox
 // media query version of the password page with diff params and text sizes
-// spanish rsvp
-// honeyfund work (o otro)
+// padding above email received
+// --
+// web: mobile rendering: rsvp page table rendering to flexbox
+// web: honeyfund work (o otro)
+// web: few db todos
+// --
+// spanish button for changing
+// --
+// bee (art)
+// map (art)
+// taller flowers (art)
+// --
+// comments functionality
+// games
+// song page
