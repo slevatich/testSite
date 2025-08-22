@@ -998,10 +998,8 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // need to set these all inline tho, not with style sheet
 
 // Today's hitlist
-// web: make the password field not autocorrect (and rsvp entry field)
-// web: mobile rendering: rsvp page table rendering to flexbox
-// web: honeyfund work (o otro) []
-// web: few db todos
+// web: rsvp flexbox, reduce length of option
+// web: new bug with saying the first person cannot attend
 // --
 // NEXT spanish button for changing
 // --
