@@ -536,7 +536,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
         tableHeader2.classList.add("infocell");
         if (item.going !== 1) tableHeader2.classList.add("extrawide")
 
-        var selectionFood = foodOptionList();
+        let selectionFood = foodOptionList();
 
         if (!edit)
         {
