@@ -361,6 +361,7 @@ button {
     from {left: -70%;}
     to {left: -170%;}
   }
+}
 
   @keyframes slideToTheRight {
     from {right: -140%;}

@@ -37,7 +37,10 @@
         <h2>Please enter your name to access your RSVP Form or view a completed RSVP</h2>
         <div class="emailSubmission">
             <br>
-            <input type="text" id="rsvp">
+            <input type="text" id="rsvp"
+            spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off" >
             <button onclick="checkrsvp()">Load RSVP</button>
         </div>
       </div>
@@ -52,13 +55,16 @@
         <div id="buttonsTable"></div>
         <div id="emailbigbox" class="hidden" style="margin-top: 20px;">
           <div id="emailbox">
-            <h2>We plan to add some additional elements to the site in the coming months (some informative, some just fun and silly!) - if you'd like a little notification you can put your email here and we'll include you in the few email blasts letting you know there's something new between now and the wedding!</h2>
+            <h4>We plan to add some additional elements to the site in the coming months (some informative, some just fun and silly!) - if you'd like a little notification you can put your email here and we'll include you in the few email blasts letting you know there's something new between now and the wedding!</h4>
             <div class="emailSubmission">
               <br>
-              <input type="text" id="email">
+              <input type="text" id="email"
+              spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off" >
               <button onclick="addemail()">Add Email</button>
             </div>
-            <div class="tinytext">(here at samimi, we promise not to be spamimi)</div>
+            <div class="tinyText">(here at samimi, we promise not to be spamimi)</div>
           </div>
           <br>
           <div id="emailresult" class="hidden">Email received!</div>
