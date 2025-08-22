@@ -997,11 +997,17 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // element.style.top
 // need to set these all inline tho, not with style sheet
 
-// Today's hitlist
-// web: rsvp flexbox, reduce length of option
-// web: new bug with saying the first person cannot attend
-// --
+// Hitlist
 // NEXT spanish button for changing
+// logging
+// more registry fixes?
+// --
+// describe veggie option
+// email addition area could have seperated background color
+// flexbox with safari tab bar spacing... solvable?
+// FAQ exercise caution as you would anywhere
+// How to extend your hotel block timing
+// Extending trip and advice there!
 // --
 // bee (art)
 // map (art)
@@ -1010,3 +1016,4 @@ function moveTowardTarget(bee, initialLeft, initialTop, targetTop, targetLeft, t
 // comments functionality
 // games
 // song page
+// miranda hat offer
