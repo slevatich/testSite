@@ -35,6 +35,7 @@ function hideLoading()
 
 async function checkrsvp() {
     var tf = document.getElementById(inputID);
+    if (tf.value.length <= 0) return;
     var savedNameKey = tf.value//.toLowerCase();
     var hint = document.getElementById(hintID)
     hint.classList.add("hidden")

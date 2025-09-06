@@ -10,6 +10,8 @@ const localStorageKey = "samimipw";
 // please dont hack us
 // we just wanted a nice intro animation
 
+var count = 0;
+
 function checkpassword() {
     var tf = document.getElementById("pw");
 
@@ -39,6 +41,11 @@ function checkpassword() {
     }
     else
     {
+        count++
+        if (count > 2) {
+            var hint = document.getElementById("openingHint");
+            hint.classList.remove("hidden");
+        }
         // TODO error shake (check save the date)
         tf.value = ""
     }
