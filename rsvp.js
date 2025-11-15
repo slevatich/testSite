@@ -509,8 +509,8 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     initializeButtonTracker(data.filter(attendee => attendee.baby === 0).length)
 
     elemHeader.textContent = !noAttendees ?
-    "Hooray! You're all set. Feel free to edit any of this data before the deadline of October 1 2025. We're excited to see you!" :
-    "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before October 1 2025!"
+    "Hooray! You're all set. Feel free to edit any of this data before the deadline of December 1 2025. We're excited to see you!" :
+    "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before December 1 2025!"
 
     // var tableRow0 = document.createElement('tr');
     // var tableHeader0 = document.createElement('th');
