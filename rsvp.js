@@ -509,7 +509,7 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
     initializeButtonTracker(data.filter(attendee => attendee.baby === 0).length)
 
     elemHeader.textContent = !noAttendees ?
-    "Hooray! You're all set. Feel free to edit any of this data before the deadline of December 1 2025. We're excited to see you!" :
+    "Hooray! You're all set. We have now sent these preferences to the venue: if something is incorrect feel free to reach out to Sam and Mimi but no guarantees we can change!" :
     "We're very sorry to be missing you! We understand and know that you are loved with all our hearts. If the situation changes, don't hesistate to come back here and edit before December 1 2025!"
 
     // var tableRow0 = document.createElement('tr');
@@ -708,15 +708,15 @@ function buildRevisionsUI(elem, elemHeader, data, edit)
 
     if (!edit)
     {
-        var button2 = document.createElement('button')
-        var foodScreenSeen = false;
-        for (var item of data)
-        {
-            if (!(item.food === null || item.food === "")) foodScreenSeen = true
-        }
-        button2.onclick = () => {stageTwo(data, null, true, noAttendees && !foodScreenSeen)};
-        button2.textContent = "Edit"
-        elem3.appendChild(button2);
+        // var button2 = document.createElement('button')
+        // var foodScreenSeen = false;
+        // for (var item of data)
+        // {
+        //     if (!(item.food === null || item.food === "")) foodScreenSeen = true
+        // }
+        // button2.onclick = () => {stageTwo(data, null, true, noAttendees && !foodScreenSeen)};
+        // button2.textContent = "Edit"
+        // elem3.appendChild(button2);
     }
     else
     {
