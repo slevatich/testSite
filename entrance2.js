@@ -11,4 +11,5 @@ function check() {
 }
 
 // run this on page load
+// comment
 check();
